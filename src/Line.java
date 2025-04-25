@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Represents a Line in a two-dimensional coordinate system.
@@ -12,9 +10,12 @@ public class Line {
     private final double y1;
     private final double x2;
     private final double y2;
-    /**Line constructor.
+
+    /**
+     * Line constructor.
+     *
      * @param start The start point coordinate of line.
-     * @param end The end point coordinate of line.
+     * @param end   The end point coordinate of line.
      */
     public Line(Point start, Point end) {
         this.x1 = start.getX();
@@ -22,7 +23,10 @@ public class Line {
         this.x2 = end.getX();
         this.y2 = end.getY();
     }
-    /** Line constructor.
+
+    /**
+     * Line constructor.
+     *
      * @param x1 the starting x coordinate of line.
      * @param y1 the starting y coordinate of line.
      * @param x2 the ending x coordinate of line.
@@ -35,7 +39,9 @@ public class Line {
         this.y2 = y2;
     }
 
-    /**Length of line.
+    /**
+     * Length of line.
+     *
      * @return the length of line in double.
      */
     public double length() {
@@ -44,14 +50,18 @@ public class Line {
         return p2.distance(p1);
     }
 
-    /**middle of line.
+    /**
+     * middle of line.
+     *
      * @return the middle point coordinates of line as a Point class.
      */
     public Point middle() {
         return new Point((this.x1 + this.x2) / 2, (this.y1 + this.y2) / 2);
     }
 
-    /** Starting point.
+    /**
+     * Starting point.
+     *
      * @return checks which coordinate is greater and returns it as a Point class.
      */
     public Point start() {
@@ -65,7 +75,9 @@ public class Line {
         return new Point(this.x2, this.y2);
     }
 
-    /** Ending point.
+    /**
+     * Ending point.
+     *
      * @return checks which coordinate is smaller and returns it as a Point class.
      */
     public Point end() {
@@ -79,7 +91,9 @@ public class Line {
         return new Point(this.x1, this.y1);
     }
 
-    /**checks if lines are intersecting.
+    /**
+     * checks if lines are intersecting.
+     *
      * @param other the other line.
      * @return true if lines intersecting, false if not.
      */
@@ -99,8 +113,8 @@ public class Line {
             intPointX = this.x1;
             intPointY = other.slope() * intPointX + other.coefficient();
         } else if (other.x1 == other.x2) {
-          intPointX = other.x1;
-          intPointY = this.slope() * intPointX + this.coefficient();
+            intPointX = other.x1;
+            intPointY = this.slope() * intPointX + this.coefficient();
         } else if (this.start().equals(other.end()) || this.end().equals(other.start())) {
             return true;
         } else {
@@ -110,8 +124,10 @@ public class Line {
         return isWithin(intPointX, intPointY, this) && isWithin(intPointX, intPointY, other);
     }
 
-    /** Checks if two lines are intercepting with the third one.
-     * @param other1  first line.
+    /**
+     * Checks if two lines are intercepting with the third one.
+     *
+     * @param other1 first line.
      * @param other2 second line.
      * @return true if intercepting false else.
      */
@@ -119,7 +135,9 @@ public class Line {
         return isIntersecting(other1) && isIntersecting(other2);
     }
 
-    /**intersection with.
+    /**
+     * intersection with.
+     *
      * @param other line.
      * @return point class of point in which lines are intercepting. if line is the same, or they are not then null.
      */
@@ -144,7 +162,9 @@ public class Line {
         return null;
     }
 
-    /**equals.
+    /**
+     * equals.
+     *
      * @param other line.
      * @return true if equal else false.
      */
@@ -164,7 +184,8 @@ public class Line {
     }
 
     /**
-     *  Checks if lines are parallel to each other.
+     * Checks if lines are parallel to each other.
+     *
      * @param other line.
      * @return true is parallel.
      */
@@ -175,6 +196,7 @@ public class Line {
 
     /**
      * Counts slope.
+     *
      * @return double value of slope.
      */
     private double slope() {
@@ -183,6 +205,7 @@ public class Line {
 
     /**
      * Counts coefficient.
+     *
      * @return double value of coefficient.
      */
     private double coefficient() {
@@ -191,8 +214,9 @@ public class Line {
 
     /**
      * Checks if the point is within the segment of the line.
-     * @param x x coordinate.
-     * @param y coordinate.
+     *
+     * @param x    x coordinate.
+     * @param y    coordinate.
      * @param line line.
      * @return true if it is within.
      */
@@ -209,6 +233,7 @@ public class Line {
 
     /**
      * Closest intersection point.
+     *
      * @param rect rectangle object.
      * @return point with the smallest distance from.
      */
@@ -222,11 +247,30 @@ public class Line {
             if (point == null) {
                 continue;
             }
-            if (minDistance > point.distance(closest)) { //if min distance is larger then change closest point.
+            if (minDistance > point.distance(closest)) { //if min distance is larger then change the closest point.
                 minDistance = point.distance(closest);
                 closest = point;
             }
         }
         return closest;
+    }
+
+    /**
+     * Checks if the point is inside line.
+     *
+     * @param point Point object.
+     * @return true if point inside false otherwise.
+     */
+    public boolean isPointInside(Point point) {
+        if (this.x1 != this.x2) {
+            // Calculate the y value using the line's equation (y = mx + b)
+            double y = this.slope() * point.getX() + this.coefficient();
+            // Check if the point's y-coordinate matches the calculated y from the equation
+            return MathChecker.doubleEquals(point.getY(), y)
+                    && point.getX() >= Math.min(this.start().getX(), this.end().getX())
+                    && point.getX() <= Math.max(this.start().getX(), this.end().getX());
+        }
+        return point.getX() == this.x1 && point.getY() >= Math.min(this.start().getY(), this.end().getY())
+                && point.getY() <= Math.max(this.start().getY(), this.end().getY());
     }
 }

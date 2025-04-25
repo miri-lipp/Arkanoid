@@ -3,23 +3,26 @@ import biuoop.DrawSurface;
 /**
  * Class Balls.
  */
-public class Ball {
+public class Ball implements Sprite {
     static final double MAX_SPEED = 100;
     // constructor
     private final int r;
     private Point center;
     private final java.awt.Color color;
     private Velocity v;
+    private GameEnvironment gameEnv;
     /**
      * Constructor.
      * @param center of class Point.
      * @param r radius.
      * @param color color of ball.
+     * @param gameEnv game environment reference.
      */
-    public Ball(Point center, int r, java.awt.Color color) {
+    public Ball(Point center, int r, java.awt.Color color, GameEnvironment gameEnv) {
         this.center = new Point(center.getX(), center.getY());
         this.r = r;
         this.color = color;
+        this.gameEnv = gameEnv;
     }
 
     /**
@@ -59,10 +62,15 @@ public class Ball {
      * Draws ball on the surface.
      * @param surface class DrawSurface.
      */
+    @Override
     public void drawOn(DrawSurface surface) {
         surface.setColor(getColor());
         surface.drawCircle(this.getX(), this.getY(), this.r);
         surface.fillCircle(this.getX(), this.getY(), this.r);
+    }
+    @Override
+    public void timePassed() {
+        this.moveOneStep(800, 600, 0, 0);
     }
 
     /**
@@ -102,6 +110,11 @@ public class Ball {
             return;
         }
         Point nextCenter = this.getVelocity().applyToPoint(this.center);
+        Line trajectory = new Line(this.center, nextCenter);
+        if (this.gameEnv.getClosestCollision(trajectory) != null) {
+            Point p = this.gameEnv.getClosestCollision(trajectory).collisionPoint();
+            this.v = this.gameEnv.getClosestCollision(trajectory).collisionObject().hit(p, this.v);
+        }
         if (nextCenter.getX() + this.r > heightMax || nextCenter.getX() - this.r < heightMin) {
             this.v = new Velocity(-this.v.getDx(), this.v.getDy());
         }
@@ -123,5 +136,4 @@ public class Ball {
         }
         ball.setVelocity(v);
     }
-
 }
