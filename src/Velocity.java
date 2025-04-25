@@ -1,0 +1,55 @@
+/**
+ * Velocity class.
+ */
+public class Velocity {
+    // constructor
+    private final double dx;
+    private final double dy;
+
+    /**
+     * Velocity constructor.
+     * @param dx double.
+     * @param dy double.
+     */
+    public Velocity(double dx, double dy) {
+        this.dx = dx;
+        this.dy = dy;
+    }
+
+    /**
+     * Velocity constructor.
+     * @param angle angle.
+     * @param speed speed of object.
+     * @return new velocity in coordinates x and y.
+     */
+    public static Velocity fromAngleAndSpeed(double angle, double speed) {
+        double dx = speed * Math.cos(angle);
+        double dy = speed * Math.sin(angle);
+        return new Velocity(dx, dy);
+    }
+
+    /**
+     * Take a point with position (x,y) and return a new point with position (x+dx, y+dy).
+     * @param p Point.
+     * @return Point.
+     */
+    public Point applyToPoint(Point p) {
+        return new Point(p.getX() + this.dx, p.getY() + this.dy);
+    }
+
+    /**
+     * Accessor of dx.
+     * @return x coordinates of velocity.
+     */
+    public double getDx() {
+        return dx;
+    }
+
+    /**
+     * Accessor of dy.
+     * @return y coordinate of velocity.
+     */
+    public double getDy() {
+        return dy;
+    }
+}
