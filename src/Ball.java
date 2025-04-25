@@ -10,7 +10,7 @@ public class Ball implements Sprite {
     private Point center;
     private final java.awt.Color color;
     private Velocity v;
-    private GameEnvironment gameEnv;
+    private final GameEnvironment gameEnv;
     /**
      * Constructor.
      * @param center of class Point.
@@ -135,5 +135,13 @@ public class Ball implements Sprite {
             ball.setVelocity(v);
         }
         ball.setVelocity(v);
+    }
+
+    /**
+     * Adding Ball to game environment.
+     * @param g game object.
+     */
+    public void addToGame(Game g) {
+        g.addSprite(this);
     }
 }

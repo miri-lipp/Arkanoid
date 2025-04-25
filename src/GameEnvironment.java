@@ -5,7 +5,7 @@ import java.util.List;
  * Game environment class.
  */
 public class GameEnvironment {
-    private List<Collidable> collidables;
+    private final List<Collidable> collidables;
 
     /**
      * Game environment constructor.

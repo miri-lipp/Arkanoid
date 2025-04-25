@@ -93,4 +93,13 @@ public class Block implements Collidable, Sprite {
         }
         return currentVelocity;
     }
+
+    /**
+     * Adding block to game environment.
+     * @param g game object.
+     */
+    public void addToGame(Game g) {
+        g.addSprite(this);
+        g.addCollidable(this);
+    }
 }

@@ -2,8 +2,8 @@
  * Collision info class.
  */
 public class CollisionInfo {
-    private Point p;
-    private Collidable c;
+    private final Point p;
+    private final Collidable c;
 
     /**
      * CollisionInfo constructor.
