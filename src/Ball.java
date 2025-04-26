@@ -111,17 +111,20 @@ public class Ball implements Sprite {
         }
         Point nextCenter = this.getVelocity().applyToPoint(this.center);
         Line trajectory = new Line(this.center, nextCenter);
-        if (this.gameEnv.getClosestCollision(trajectory) != null) {
-            Point p = this.gameEnv.getClosestCollision(trajectory).collisionPoint();
-            this.v = this.gameEnv.getClosestCollision(trajectory).collisionObject().hit(p, this.v);
+        CollisionInfo collisionInfo = this.gameEnv.getClosestCollision(trajectory);
+        if (collisionInfo != null) {
+            Point p = collisionInfo.collisionPoint();
+            this.v = collisionInfo.collisionObject().hit(p, this.v);
+            this.center = this.v.applyToPoint(this.center);
+        } else {
+            this.center = nextCenter;
         }
-        if (nextCenter.getX() + this.r > heightMax || nextCenter.getX() - this.r < heightMin) {
+        if (this.center.getX() + this.r > heightMax || this.center.getX() - this.r < heightMin) {
             this.v = new Velocity(-this.v.getDx(), this.v.getDy());
         }
-        if (nextCenter.getY() + this.r > widthMax || nextCenter.getY() - this.r < widthMin) {
+        if (this.center.getY() + this.r > widthMax || this.center.getY() - this.r < widthMin) {
             this.v = new Velocity(this.v.getDx(), -this.v.getDy());
         }
-        this.center = this.getVelocity().applyToPoint(this.center);
     }
 
     /**

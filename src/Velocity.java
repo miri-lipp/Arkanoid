@@ -23,9 +23,21 @@ public class Velocity {
      * @return new velocity in coordinates x and y.
      */
     public static Velocity fromAngleAndSpeed(double angle, double speed) {
+        angle = Math.toRadians(angle);
         double dx = speed * Math.cos(angle);
-        double dy = speed * Math.sin(angle);
+        double dy = -speed * Math.sin(angle);
+        if (Math.abs(dx) < 0.0001) {
+            dx = 0.0001;
+        }
         return new Velocity(dx, dy);
+    }
+
+    /**
+     * Getter of speed.
+     * @return speed.
+     */
+    public double getSpeed() {
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     /**

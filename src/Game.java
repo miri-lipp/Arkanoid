@@ -1,5 +1,6 @@
 import biuoop.GUI;
 import biuoop.DrawSurface;
+import biuoop.KeyboardSensor;
 import biuoop.Sleeper;
 
 import java.awt.Color;
@@ -12,15 +13,15 @@ public class Game {
     private GameEnvironment environment;
     private GUI gui;
     private Sleeper sleeper;
-//    /**
-//     * Game constructor.
-//     * @param sprites sprite collection.
-//     * @param environment game environment.
-//     */
-//    public Game(SpriteCollection sprites, GameEnvironment environment) {
-//        this.sprites = sprites;
-//        this.environment = environment;
-//    }
+    static final Color[] COLORS = {
+            Color.RED,
+            Color.GREEN,
+            Color.YELLOW,
+            Color.MAGENTA,
+            Color.ORANGE,
+            Color.CYAN,
+            Color.PINK,
+    };
 
     /**
      * Adding collidable to game environment.
@@ -48,14 +49,27 @@ public class Game {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
         this.gui = new GUI("Game", 800, 600);
+        KeyboardSensor keyboard = gui.getKeyboardSensor();
         this.sleeper = new Sleeper();
         Velocity v = Velocity.fromAngleAndSpeed(90, 4);
+        Paddle paddle = new Paddle(new Point(350, 560), 20, 80, keyboard);
+        paddle.addToGame(this);
         Ball ball = new Ball(new Point(300, 400), 5, Color.ORANGE, this.environment);
         ball.addToGame(this);
         ball.setVelocity(v);
-        for (int i = 0; i < 4; i++) {
-            Block block = new Block(120, 60, new Point(i * 20, i * 30 + 5 * i));
-            block.addToGame(this);
+        Block blockWallLeft = new Block(20, 580, new Point(0, 20), Color.GRAY);
+        Block blockWallRight = new Block(20, 580, new Point(780, 20), Color.GRAY);
+        Block blockWallUp = new Block(800, 20, new Point(0, 0), Color.GRAY);
+        Block blockWallDown = new Block(760, 20, new Point(20, 580), Color.GRAY);
+        blockWallLeft.addToGame(this);
+        blockWallRight.addToGame(this);
+        blockWallUp.addToGame(this);
+        blockWallDown.addToGame(this);
+        for (int i = 0; i < 6; i++) {
+            for (int j = 11; j > i; j--) {
+                Block block = new Block(60, 30, new Point(60 + j * 60, 140 + i * 31), COLORS[i]);
+                block.addToGame(this);
+            }
         }
     }
 
@@ -70,6 +84,9 @@ public class Game {
         while (true) {
             long startTime = System.currentTimeMillis(); // timing
             DrawSurface d = gui.getDrawSurface();
+            d.setColor(Color.BLUE);
+            d.drawRectangle(0, 0, 800, 600);
+            d.fillRectangle(0, 0, 800, 600);
             this.sprites.drawAllOn(d);
             gui.show(d);
             this.sprites.notifyAllTimePassed();
@@ -82,9 +99,14 @@ public class Game {
             }
         }
     }
-    public static void main(String[] args) {
-        Game g = new Game();
-        g.initialize();
-        g.run();
-    }
+
+//    /**
+//     * Main.
+//     * @param args string.
+//     */
+//    public static void main(String[] args) {
+//        Game g = new Game();
+//        g.initialize();
+//        g.run();
+//    }
 }

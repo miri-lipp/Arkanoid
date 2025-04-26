@@ -8,50 +8,22 @@ import java.awt.Color;
 public class Block implements Collidable, Sprite {
     private final double width;
     private final double height;
-    private final Point uperleft;
+    private final Point upperleft;
+    private final Color color;
 
     /**
      * Block constructor.
      * @param width of the rectangle.
      * @param height of the rectangle.
-     * @param uperleft Point of the rectangle.
+     * @param upperleft Point of the rectangle.
+     * @param color color of block.
      */
-    public Block(double width, double height, Point uperleft) {
+    public Block(double width, double height, Point upperleft, Color color) {
         this.width = width;
         this.height = height;
-        this.uperleft = uperleft;
+        this.upperleft = upperleft;
+        this.color = color;
     }
-
-//    private void setBounds(int minX, int minY, int maxX, int maxY, Ball ball, int radius) {
-//        Velocity v = ball.getVelocity();
-//        double nextX = ball.getX() + v.getDx();
-//        double nextY = ball.getY() + v.getDy();
-//        boolean hitX = false;
-//        boolean hitY = false;
-//        if (nextX + radius > minX && nextX - radius < maxX) {
-//            if ((ball.getY() < minY && nextY + radius > minY && v.getDy() > 0)
-//                    || (ball.getY() > maxY && nextY - radius < maxY && v.getDy() < 0)) {
-//                hitY = true;
-//            }
-//        }
-//        if (nextY + radius > minY && nextY - radius < maxY) {
-//            if ((ball.getX() < minX && nextX + radius > minX && v.getDx() > 0)
-//                    || (ball.getX() > maxX && nextX - radius <= maxX && v.getDx() < 0)) {
-//                hitX = true;
-//            }
-//        }
-//        double dx = v.getDx();
-//        double dy = v.getDy();
-//        if (hitX) {
-//            dx = -dx;
-//        }
-//        if (hitY) {
-//            dy = -dy;
-//        }
-//        if (hitX || hitY) {
-//            ball.setVelocity(dx, dy);
-//        }
-//    }
     @Override
     public void timePassed() {
         return;
@@ -63,16 +35,17 @@ public class Block implements Collidable, Sprite {
      */
     @Override
     public void drawOn(DrawSurface surface) {
-        surface.setColor(Color.BLUE);
-        surface.drawRectangle((int) this.uperleft.getX(), (int) this.uperleft.getY(),
+        surface.setColor(Color.BLACK);
+        surface.drawRectangle((int) this.upperleft.getX(), (int) this.upperleft.getY(),
                 (int) this.width, (int) this.height);
-        surface.fillRectangle((int) this.uperleft.getX(), (int) this.uperleft.getY(),
+        surface.setColor(this.color);
+        surface.fillRectangle((int) this.upperleft.getX(), (int) this.upperleft.getY(),
                 (int) this.width, (int) this.height);
     }
 
     @Override
     public Rectangle getCollisionRectangle() {
-        return new Rectangle(this.uperleft, this.width, this.height);
+        return new Rectangle(this.upperleft, this.width, this.height);
     }
 
     @Override
