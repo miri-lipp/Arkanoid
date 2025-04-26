@@ -48,15 +48,18 @@ public class Game {
     public void initialize() {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
-        this.gui = new GUI("Game", 800, 600);
+        this.gui = new GUI("Arkanoid", 800, 600);
         KeyboardSensor keyboard = gui.getKeyboardSensor();
         this.sleeper = new Sleeper();
         Velocity v = Velocity.fromAngleAndSpeed(90, 4);
         Paddle paddle = new Paddle(new Point(350, 560), 20, 80, keyboard);
         paddle.addToGame(this);
-        Ball ball = new Ball(new Point(300, 400), 5, Color.ORANGE, this.environment);
-        ball.addToGame(this);
-        ball.setVelocity(v);
+        Ball ball1 = new Ball(new Point(300, 400), 5, Color.ORANGE, this.environment);
+        Ball ball2 = new Ball(new Point(400, 300), 5, Color.PINK, this.environment);
+        ball1.addToGame(this);
+        ball2.addToGame(this);
+        ball1.setVelocity(v);
+        ball2.setVelocity(v);
         Block blockWallLeft = new Block(20, 580, new Point(0, 20), Color.GRAY);
         Block blockWallRight = new Block(20, 580, new Point(780, 20), Color.GRAY);
         Block blockWallUp = new Block(800, 20, new Point(0, 0), Color.GRAY);
