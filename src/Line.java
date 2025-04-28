@@ -237,26 +237,4 @@ public class Line {
         }
         return closest;
     }
-
-    /**
-     * Checks if the point is inside line.
-     *
-     * @param point Point object.
-     * @return true if point inside false otherwise.
-     */
-    public boolean isPointInside(Point point) {
-        if (!MathChecker.doubleEquals(this.x1, this.x2)) {
-            double expectedY = this.slope() * point.getX() + this.coefficient();
-            return MathChecker.doubleEquals(point.getY(), expectedY)
-                    && point.getX() >= Math.min(this.start().getX(), this.end().getX()) - DOUBLE
-                    && point.getX() <= Math.max(this.start().getX(), this.end().getX()) + DOUBLE
-                    && point.getY() >= Math.min(this.start().getY(), this.end().getY()) - DOUBLE
-                    && point.getY() <= Math.max(this.start().getY(), this.end().getY()) + DOUBLE;
-        } else {
-            // Vertical line
-            return MathChecker.doubleEquals(point.getX(), this.x1)
-                    && point.getY() >= Math.min(this.start().getY(), this.end().getY()) - DOUBLE
-                    && point.getY() <= Math.max(this.start().getY(), this.end().getY()) + DOUBLE;
-        }
-    }
 }

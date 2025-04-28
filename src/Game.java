@@ -54,12 +54,12 @@ public class Game {
         Velocity v = Velocity.fromAngleAndSpeed(90, 6);
         Paddle paddle = new Paddle(new Point(350, 560), 20, 80, keyboard);
         paddle.addToGame(this);
-        Ball ball1 = new Ball(new Point(299, 400), 5, Color.ORANGE, this.environment);
-        //Ball ball2 = new Ball(new Point(420, 100), 5, Color.PINK, this.environment);
+        Ball ball1 = new Ball(new Point(299, 400), 4, Color.ORANGE, this.environment);
+        Ball ball2 = new Ball(new Point(420, 100), 5, Color.PINK, this.environment);
         ball1.addToGame(this);
-        //ball2.addToGame(this);
+        ball2.addToGame(this);
         ball1.setVelocity(v);
-        //ball2.setVelocity(v);
+        ball2.setVelocity(v);
         Block blockWallLeft = new Block(20, 580, new Point(0, 20), Color.GRAY);
         Block blockWallRight = new Block(20, 580, new Point(780, 20), Color.GRAY);
         Block blockWallUp = new Block(800, 20, new Point(0, 0), Color.GRAY);

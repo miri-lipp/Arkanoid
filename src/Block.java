@@ -55,7 +55,7 @@ public class Block implements Collidable, Sprite {
         boolean hitHorizontal = false;
         //checks if is hit one of the sides of the rectangle.
         for (Line side : getCollisionRectangle().getSides()) {
-            if (side.isPointInside(collisionPoint)) {
+            if (side.isWithin(collisionPoint.getX(), collisionPoint.getY(), side)) {
                 boolean horizontal = MathChecker.doubleEquals(side.start().getY(), side.end().getY());
                 boolean vertical = MathChecker.doubleEquals(side.start().getX(), side.end().getX());
                 if (horizontal) {

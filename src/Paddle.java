@@ -92,8 +92,8 @@ public class Paddle implements Collidable, Sprite {
             }
         }
         for (Line side : getCollisionRectangle().getSides()) {
-            if (side.isPointInside(collisionPoint)) {
-                if (side.isPointInside(collisionPoint)) {
+            if (side.isWithin(collisionPoint.getX(), collisionPoint.getY(), side)) {
+                if (side.isWithin(collisionPoint.getX(), collisionPoint.getY(), side)) {
                     double dx = currentVelocity.getDx();
                     double dy = currentVelocity.getDy();
                     boolean horizontal = MathChecker.doubleEquals(side.start().getY(), side.end().getY());

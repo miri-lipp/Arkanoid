@@ -46,8 +46,7 @@ public class Ball implements Sprite {
      * @return size of ball.
      */
     public int getSize() {
-        double length = 2 * Math.PI * r;
-        return (int) length;
+        return this.r;
     }
 
     /**
@@ -106,8 +105,22 @@ public class Ball implements Sprite {
             return;
         }
         Point nextCenter = this.getVelocity().applyToPoint(this.center);
+        // EXTEND the trajectory by radius
+        double dx = nextCenter.getX() - this.center.getX();
+        double dy = nextCenter.getY() - this.center.getY();
+        double length = Math.sqrt(dx * dx + dy * dy);
+        if (length != 0) {
+            // Normalize direction vector
+            dx = dx / length;
+            dy = dy / length;
+        }
+        // Create a new point slightly "ahead" by radius
+        Point extendedNextCenter = new Point(
+                nextCenter.getX() + dx * this.r,
+                nextCenter.getY() + dy * this.r
+        );
         // Create a new trajectory line
-        Line trajectory = new Line(this.center, nextCenter);
+        Line trajectory = new Line(this.center, extendedNextCenter);
 
         CollisionInfo collisionInfo = this.gameEnv.getClosestCollision(trajectory);
         if (collisionInfo != null) {
