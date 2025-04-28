@@ -10,6 +10,7 @@ public class Block implements Collidable, Sprite {
     private final double height;
     private final Point upperleft;
     private final Color color;
+    static final int RADIUS = 5;
 
     /**
      * Block constructor.
@@ -50,21 +51,30 @@ public class Block implements Collidable, Sprite {
 
     @Override
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+        boolean hitVertical = false;
+        boolean hitHorizontal = false;
+        //checks if is hit one of the sides of the rectangle.
         for (Line side : getCollisionRectangle().getSides()) {
             if (side.isPointInside(collisionPoint)) {
-                double dx = currentVelocity.getDx();
-                double dy = currentVelocity.getDy();
                 boolean horizontal = MathChecker.doubleEquals(side.start().getY(), side.end().getY());
                 boolean vertical = MathChecker.doubleEquals(side.start().getX(), side.end().getX());
                 if (horizontal) {
-                    return new Velocity(dx, -dy);
+                    hitHorizontal = true;
                 }
                 if (vertical) {
-                    return new Velocity(-dx, dy);
+                    hitVertical = true;
                 }
             }
         }
-        return currentVelocity;
+        double dx = currentVelocity.getDx();
+        double dy = currentVelocity.getDy();
+        if (hitHorizontal) { //if horizontal change dy to -dy
+            dy = -dy;
+        }
+        if (hitVertical) { //if vertical change dx to -dx
+            dx = -dx;
+        }
+        return new Velocity(dx, dy);
     }
 
     /**

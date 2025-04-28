@@ -1,3 +1,4 @@
+import java.util.List;
 
 /**
  * Represents a Line in a two-dimensional coordinate system.
@@ -5,6 +6,7 @@
  * It provides methods to retrieve and manipulate the point's coordinates.
  */
 public class Line {
+    public static final double DOUBLE = 1e-10;
     // constructors
     private final double x1;
     private final double y1;
@@ -65,14 +67,11 @@ public class Line {
      * @return checks which coordinate is greater and returns it as a Point class.
      */
     public Point start() {
-        if (this.x1 > this.x2 && this.y1 > this.y2) {
-            return new Point(this.x1, this.y1);
-        } else if (this.x1 > this.x2 && this.y1 < this.y2) {
-            return new Point(this.x1, this.y2);
-        } else if (this.x1 < this.x2 && this.y1 > this.y2) {
-            return new Point(this.x2, this.y1);
+        if (x1 < x2 || (MathChecker.doubleEquals(x1, x2) && y1 < y2)) {
+            return new Point(x1, y1);
+        } else {
+            return new Point(x2, y2);
         }
-        return new Point(this.x2, this.y2);
     }
 
     /**
@@ -81,14 +80,11 @@ public class Line {
      * @return checks which coordinate is smaller and returns it as a Point class.
      */
     public Point end() {
-        if (this.x1 > this.x2 && this.y1 > this.y2) {
-            return new Point(this.x2, this.y2);
-        } else if (this.x1 > this.x2 && this.y1 < this.y2) {
-            return new Point(this.x2, this.y1);
-        } else if (this.x1 < this.x2 && this.y1 > this.y2) {
-            return new Point(this.x1, this.y2);
+        if (x1 > x2 || (MathChecker.doubleEquals(x1, x2) && y1 > y2)) {
+            return new Point(x1, y1);
+        } else {
+            return new Point(x2, y2);
         }
-        return new Point(this.x1, this.y1);
     }
 
     /**
@@ -101,27 +97,36 @@ public class Line {
         if (this.start().equals(this.end()) || other.start().equals(other.end())) { //if line is a point
             return false;
         }
-        if (this.parallel(other)) { //lines parallel m = m but b != b so there will never be a point of intersection
-            return false;
-        }
         if (this.equals(other)) {
             return true;
         }
-        double intPointX;
-        double intPointY;
-        if (this.x1 == this.x2) {
-            intPointX = this.x1;
-            intPointY = other.slope() * intPointX + other.coefficient();
-        } else if (other.x1 == other.x2) {
-            intPointX = other.x1;
-            intPointY = this.slope() * intPointX + this.coefficient();
-        } else if (this.start().equals(other.end()) || this.end().equals(other.start())) {
-            return true;
-        } else {
-            intPointX = (other.coefficient() - this.coefficient()) / (this.slope() - other.slope());
-            intPointY = this.slope() * intPointX + this.coefficient();
+        Point intersection = calculateIntersectionPoint(other);
+        return intersection != null && isWithin(intersection.getX(), intersection.getY(), this)
+                && isWithin(intersection.getX(), intersection.getY(), other);
+    }
+
+    private Point calculateIntersectionPoint(Line other) {
+        double m1 = this.slope();
+        double m2 = other.slope();
+        double b1 = this.coefficient();
+        double b2 = other.coefficient();
+        if (MathChecker.doubleEquals(m1, m2)) {
+            return null; // parallel (or same line, handled elsewhere)
         }
-        return isWithin(intPointX, intPointY, this) && isWithin(intPointX, intPointY, other);
+        double x, y;
+        if (Double.isInfinite(m1)) {
+            // This line vertical
+            x = this.x1;
+            y = m2 * x + b2;
+        } else if (Double.isInfinite(m2)) {
+            // Other line vertical
+            x = other.x1;
+            y = m1 * x + b1;
+        } else {
+            x = (b2 - b1) / (m1 - m2);
+            y = m1 * x + b1;
+        }
+        return new Point(x, y);
     }
 
     /**
@@ -142,24 +147,13 @@ public class Line {
      * @return point class of point in which lines are intercepting. if line is the same, or they are not then null.
      */
     public Point intersectionWith(Line other) {
-        if (isIntersecting(other)) {
-            if (this.equals(other)) {
-                return null;
-            }
-            double intPointX = (other.coefficient() - this.coefficient()) / (this.slope() - other.slope());
-            double intPointY = this.slope() * intPointX + this.coefficient();
-            if (this.x1 == this.x2) {
-                return new Point(this.x1, other.slope() * this.x1 + other.coefficient());
-            } else if (other.x1 == other.x2) {
-                return new Point(other.x1, this.slope() * other.x1 + this.coefficient());
-            } else if (this.start().equals(other.end())) {
-                return new Point(this.start().getX(), this.start().getY());
-            } else if (this.end().equals(other.start())) {
-                return new Point(this.end().getX(), this.end().getY());
-            }
-            return new Point(intPointX, intPointY);
+        if (!isIntersecting(other)) {
+            return null;
         }
-        return null;
+        if (this.equals(other)) {
+            return null;
+        }
+        return calculateIntersectionPoint(other);
     }
 
     /**
@@ -169,29 +163,8 @@ public class Line {
      * @return true if equal else false.
      */
     public boolean equals(Line other) {
-        if (this.x1 == this.x2 && other.x1 == other.x2) {
-            return MathChecker.doubleEquals(this.x1, other.x1)
-                    && (isWithin(this.start().getY(), this.start().getY(), other)
-                    || isWithin(this.end().getY(), this.end().getY(), other)
-                    || isWithin(other.start().getY(), other.start().getY(), this)
-                    || isWithin(other.end().getY(), other.end().getY(), this));
-        }
-        if (this.start().equals(other.end()) || this.end().equals(other.start())) {
-            return false;
-        }
-        return MathChecker.doubleEquals(this.slope(), other.slope())
-                && MathChecker.doubleEquals(this.coefficient(), other.coefficient());
-    }
-
-    /**
-     * Checks if lines are parallel to each other.
-     *
-     * @param other line.
-     * @return true is parallel.
-     */
-    public boolean parallel(Line other) {
-        return MathChecker.doubleEquals(this.slope(), other.slope())
-                && !MathChecker.doubleEquals(this.coefficient(), other.coefficient());
+        return this.start().equals(other.start()) && this.end().equals(other.end())
+                || (this.start().equals(other.end()) && this.end().equals(other.start()));
     }
 
     /**
@@ -200,7 +173,11 @@ public class Line {
      * @return double value of slope.
      */
     private double slope() {
-        return (this.y1 - this.y2) / (this.x1 - this.x2);
+        if (MathChecker.doubleEquals(this.x1, this.x2)) {
+            // Vertical line => infinite slope, handled separately
+            return Double.POSITIVE_INFINITY;
+        }
+        return (this.y2 - this.y1) / (this.x2 - this.x1);
     }
 
     /**
@@ -209,7 +186,11 @@ public class Line {
      * @return double value of coefficient.
      */
     private double coefficient() {
-        return this.y1 - this.slope() * this.x1;
+        if (MathChecker.doubleEquals(this.x1, this.x2)) {
+            // Vertical line => no coefficient (y = mx + b does not exist)
+            return Double.NaN;
+        }
+        return this.y1 - slope() * this.x1;
     }
 
     /**
@@ -221,10 +202,11 @@ public class Line {
      * @return true if it is within.
      */
     public boolean isWithin(double x, double y, Line line) {
-        return ((MathChecker.doubleEquals(x, line.end().getX()) || x > line.end().getX()) && (x < line.start().getX()
-                || MathChecker.doubleEquals(x, line.start().getX())) && (MathChecker.doubleEquals(y, line.end().getY())
-                || y > line.end().getY()) && (y <= line.start().getY()
-                || MathChecker.doubleEquals(y, line.start().getY())));
+        double startX = Math.min(line.start().getX(), line.end().getX());
+        double endX = Math.max(line.start().getX(), line.end().getX());
+        double startY = Math.min(line.start().getY(), line.end().getY());
+        double endY = Math.max(line.start().getY(), line.end().getY());
+        return (x >= startX - DOUBLE && x <= endX + DOUBLE && y >= startY - DOUBLE && y <= endY + DOUBLE);
     }
 
     // If this line does not intersect with the rectangle, return null.
@@ -238,7 +220,8 @@ public class Line {
      * @return point with the smallest distance from.
      */
     public Point closestIntersectionToStartOfLine(Rectangle rect) {
-        if (rect.intersectionPoints(this).isEmpty()) {
+        List<Point> intersections = rect.intersectionPoints(this);
+        if (intersections.isEmpty()) {
             return null;
         }
         Point closest = rect.intersectionPoints(this).get(0);
@@ -247,8 +230,8 @@ public class Line {
             if (point == null) {
                 continue;
             }
-            if (minDistance > point.distance(closest)) { //if min distance is larger then change the closest point.
-                minDistance = point.distance(closest);
+            if (minDistance > this.start().distance(point)) { //if min distance is larger then change the closest point.
+                minDistance = this.start().distance(point);
                 closest = point;
             }
         }
@@ -262,15 +245,18 @@ public class Line {
      * @return true if point inside false otherwise.
      */
     public boolean isPointInside(Point point) {
-        if (this.x1 != this.x2) {
-            // Calculate the y value using the line's equation (y = mx + b)
-            double y = this.slope() * point.getX() + this.coefficient();
-            // Check if the point's y-coordinate matches the calculated y from the equation
-            return MathChecker.doubleEquals(point.getY(), y)
-                    && point.getX() >= Math.min(this.start().getX(), this.end().getX())
-                    && point.getX() <= Math.max(this.start().getX(), this.end().getX());
+        if (!MathChecker.doubleEquals(this.x1, this.x2)) {
+            double expectedY = this.slope() * point.getX() + this.coefficient();
+            return MathChecker.doubleEquals(point.getY(), expectedY)
+                    && point.getX() >= Math.min(this.start().getX(), this.end().getX()) - DOUBLE
+                    && point.getX() <= Math.max(this.start().getX(), this.end().getX()) + DOUBLE
+                    && point.getY() >= Math.min(this.start().getY(), this.end().getY()) - DOUBLE
+                    && point.getY() <= Math.max(this.start().getY(), this.end().getY()) + DOUBLE;
+        } else {
+            // Vertical line
+            return MathChecker.doubleEquals(point.getX(), this.x1)
+                    && point.getY() >= Math.min(this.start().getY(), this.end().getY()) - DOUBLE
+                    && point.getY() <= Math.max(this.start().getY(), this.end().getY()) + DOUBLE;
         }
-        return point.getX() == this.x1 && point.getY() >= Math.min(this.start().getY(), this.end().getY())
-                && point.getY() <= Math.max(this.start().getY(), this.end().getY());
     }
 }

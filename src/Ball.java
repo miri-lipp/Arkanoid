@@ -70,7 +70,7 @@ public class Ball implements Sprite {
     }
     @Override
     public void timePassed() {
-        this.moveOneStep(800, 600, 0, 0);
+        this.moveOneStep();
     }
 
     /**
@@ -100,17 +100,15 @@ public class Ball implements Sprite {
 
     /**
      * Moves one step.
-     * @param heightMax max height.
-     * @param widthMax max width.
-     * @param heightMin minimum height.
-     * @param widthMin minimum width.
      */
-    public void moveOneStep(int heightMax, int widthMax, int heightMin, int widthMin) {
+    public void moveOneStep() {
         if (this.v == null) {
             return;
         }
         Point nextCenter = this.getVelocity().applyToPoint(this.center);
+        // Create a new trajectory line
         Line trajectory = new Line(this.center, nextCenter);
+
         CollisionInfo collisionInfo = this.gameEnv.getClosestCollision(trajectory);
         if (collisionInfo != null) {
             Point p = collisionInfo.collisionPoint();
@@ -118,12 +116,6 @@ public class Ball implements Sprite {
             this.center = this.v.applyToPoint(this.center);
         } else {
             this.center = nextCenter;
-        }
-        if (this.center.getX() + this.r > heightMax || this.center.getX() - this.r < heightMin) {
-            this.v = new Velocity(-this.v.getDx(), this.v.getDy());
-        }
-        if (this.center.getY() + this.r > widthMax || this.center.getY() - this.r < widthMin) {
-            this.v = new Velocity(this.v.getDx(), -this.v.getDy());
         }
     }
 

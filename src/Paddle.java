@@ -11,7 +11,7 @@ public class Paddle implements Collidable, Sprite {
     private final double height;
     private final double width;
     private Point upperLeft;
-
+    static final int RADIUS = 5;
     /**
      * Paddle constructor.
      * @param upperLeft starting point.
