@@ -52,9 +52,9 @@ public class Game {
         KeyboardSensor keyboard = gui.getKeyboardSensor();
         this.sleeper = new Sleeper();
         Velocity v = Velocity.fromAngleAndSpeed(90, 6);
-        Paddle paddle = new Paddle(new Point(350, 560), 20, 80, keyboard);
+        Paddle paddle = new Paddle(new Point(35, 560), 20, 80, keyboard);
         paddle.addToGame(this);
-        Ball ball1 = new Ball(new Point(300, 400), 4, Color.ORANGE, this.environment);
+        Ball ball1 = new Ball(new Point(330, 400), 4, Color.ORANGE, this.environment);
         Ball ball2 = new Ball(new Point(69, 420), 5, Color.PINK, this.environment);
         ball1.addToGame(this);
         ball2.addToGame(this);

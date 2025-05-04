@@ -224,14 +224,15 @@ public class Line {
         if (intersections.isEmpty()) {
             return null;
         }
-        Point closest = rect.intersectionPoints(this).get(0);
-        double minDistance = this.start().distance(closest);
-        for (Point point : rect.intersectionPoints(this)) {
+        Point closest = null;
+        double minDistance = Double.MAX_VALUE;
+        for (Point point : intersections) {
             if (point == null) {
                 continue;
             }
-            if (minDistance > this.start().distance(point)) { //if min distance is larger then change the closest point.
-                minDistance = this.start().distance(point);
+            double distance = this.start().distance(point);
+            if (minDistance > distance) { //if min distance is larger then change the closest point.
+                minDistance = distance;
                 closest = point;
             }
         }

@@ -37,7 +37,7 @@ public class GameEnvironment {
         double minDistance = Double.MAX_VALUE;
         for (Collidable collidable : this.collidables) {
             Point p = trajectory.closestIntersectionToStartOfLine(collidable.getCollisionRectangle());
-            if (trajectory.closestIntersectionToStartOfLine(collidable.getCollisionRectangle()) != null) {
+            if (p != null) {
                 double distance = trajectory.start().distance(p);
                 if (distance < minDistance) {
                     minDistance = distance;

@@ -91,23 +91,29 @@ public class Paddle implements Collidable, Sprite {
                 return Velocity.fromAngleAndSpeed(60, currentVelocity.getSpeed());
             }
         }
+        boolean hitVertical = false;
+        boolean hitHorizontal = false;
         for (Line side : getCollisionRectangle().getSides()) {
             if (side.isWithin(collisionPoint.getX(), collisionPoint.getY(), side)) {
-                if (side.isWithin(collisionPoint.getX(), collisionPoint.getY(), side)) {
-                    double dx = currentVelocity.getDx();
-                    double dy = currentVelocity.getDy();
-                    boolean horizontal = MathChecker.doubleEquals(side.start().getY(), side.end().getY());
-                    boolean vertical = MathChecker.doubleEquals(side.start().getX(), side.end().getX());
-                    if (horizontal) {
-                        return new Velocity(dx, -dy);
-                    }
-                    if (vertical) {
-                        return new Velocity(-dx, dy);
-                    }
+                boolean horizontal = MathChecker.doubleEquals(side.start().getY(), side.end().getY());
+                boolean vertical = MathChecker.doubleEquals(side.start().getX(), side.end().getX());
+                if (horizontal) {
+                    hitHorizontal = true;
+                }
+                if (vertical) {
+                    hitVertical = true;
                 }
             }
         }
-        return currentVelocity;
+        double dx = currentVelocity.getDx();
+        double dy = currentVelocity.getDy();
+        if (hitHorizontal) { //if horizontal change dy to -dy
+            dy = -dy;
+        }
+        if (hitVertical) { //if vertical change dx to -dx
+            dx = -dx;
+        }
+        return new Velocity(dx, dy);
     }
 
     // Add this paddle to the game.

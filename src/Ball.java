@@ -121,12 +121,12 @@ public class Ball implements Sprite {
         );
         // Create a new trajectory line
         Line trajectory = new Line(this.center, extendedNextCenter);
-
         CollisionInfo collisionInfo = this.gameEnv.getClosestCollision(trajectory);
         if (collisionInfo != null) {
             Point p = collisionInfo.collisionPoint();
+            this.center = new Point(p.getX() - dx * 0.01, p.getY() - dy * 0.01); // Slightly before collision
             this.v = collisionInfo.collisionObject().hit(p, this.v);
-            this.center = this.v.applyToPoint(this.center);
+            //this.center = this.v.applyToPoint(this.center);
         } else {
             this.center = nextCenter;
         }
