@@ -26,8 +26,8 @@ public class Velocity {
         angle = Math.toRadians(angle);
         double dx = speed * Math.cos(angle);
         double dy = -speed * Math.sin(angle);
-        if (Math.abs(dx) < 0.0001) {
-            dx = 0.0001;
+        if (Math.abs(dx) < 0.01) {
+            dx = 0.05;
         }
         return new Velocity(dx, dy);
     }

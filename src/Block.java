@@ -46,7 +46,10 @@ public class Block implements Collidable, Sprite {
 
     @Override
     public Rectangle getCollisionRectangle() {
-        return new Rectangle(this.upperleft, this.width, this.height);
+        Point p = new Point(this.upperleft.getX(), this.upperleft.getY());
+        double widthCollision = this.width;
+        double heightCollision = this.height;
+        return new Rectangle(p, widthCollision, heightCollision);
     }
 
     @Override

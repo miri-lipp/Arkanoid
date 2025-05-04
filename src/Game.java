@@ -51,7 +51,7 @@ public class Game {
         this.gui = new GUI("Arkanoid", 800, 600);
         KeyboardSensor keyboard = gui.getKeyboardSensor();
         this.sleeper = new Sleeper();
-        Velocity v = Velocity.fromAngleAndSpeed(90, 6);
+        Velocity v = Velocity.fromAngleAndSpeed(90, 5);
         Paddle paddle = new Paddle(new Point(35, 560), 20, 80, keyboard);
         paddle.addToGame(this);
         Ball ball1 = new Ball(new Point(330, 400), 4, Color.ORANGE, this.environment);
@@ -91,6 +91,8 @@ public class Game {
             d.drawRectangle(0, 0, 800, 600);
             d.fillRectangle(0, 0, 800, 600);
             this.sprites.drawAllOn(d);
+//            this.ball1.DrawLine(d);
+//            this.ball2.DrawLine(d);
             gui.show(d);
             this.sprites.notifyAllTimePassed();
 

@@ -1,5 +1,7 @@
 import biuoop.DrawSurface;
 
+import java.awt.*;
+
 /**
  * Class Balls.
  */
@@ -106,7 +108,7 @@ public class Ball implements Sprite {
         }
         Point nextCenter = new Point(this.center.getX() + v.getDx(), this.center.getY() + v.getDy());
         Line trajectory = new Line(this.center, nextCenter);
-        CollisionInfo collisionInfo = this.gameEnv.getClosestCollision(trajectory);
+        CollisionInfo collisionInfo = gameEnv.getClosestCollision(trajectory);
         if (collisionInfo != null) {
             Point p = collisionInfo.collisionPoint();
             this.v = collisionInfo.collisionObject().hit(p, this.v);
@@ -115,44 +117,6 @@ public class Ball implements Sprite {
         } else {
             this.center = nextCenter;
         }
-//        double remainingDistance = this.v.getSpeed(); // magnitude of velocity
-//        Point currentPos = this.center;
-//
-//        while (remainingDistance > 0.01) {
-//            Point nextPos = this.v.applyToPoint(currentPos);
-//            double dx = nextPos.getX() - currentPos.getX();
-//            double dy = nextPos.getY() - currentPos.getY();
-//            double length = Math.sqrt(dx * dx + dy * dy);
-//
-//            if (length == 0) {
-//                break;
-//            }
-//
-//            dx /= length;
-//            dy /= length;
-//
-//            Point extendedNext = new Point(
-//                    nextPos.getX() + dx * this.r,
-//                    nextPos.getY() + dy * this.r
-//            );
-//
-//            Line trajectory = new Line(currentPos, extendedNext);
-//            CollisionInfo collision = this.gameEnv.getClosestCollision(trajectory);
-//            if (collision == null) {
-//                this.center = nextPos;
-//                break;
-//            } else {
-//                Point collisionPoint = collision.collisionPoint();
-//                // Move just before collision point to avoid overlap
-//                currentPos = new Point(
-//                        collisionPoint.getX() - dx * 0.01,
-//                        collisionPoint.getY() - dy * 0.01
-//                );
-//                this.v = collision.collisionObject().hit(collisionPoint, this.v);
-//                remainingDistance -= currentPos.distance(this.center);
-//                this.center = currentPos;
-//            }
-//        }
     }
 
     /**
