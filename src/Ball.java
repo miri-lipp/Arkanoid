@@ -1,7 +1,5 @@
 import biuoop.DrawSurface;
 
-import java.awt.*;
-
 /**
  * Class Balls.
  */
@@ -57,7 +55,7 @@ public class Ball implements Sprite {
      */
     public java.awt.Color getColor() {
         return this.color;
-    };
+    }
 
     /**
      * Draws ball on the surface.
@@ -70,8 +68,8 @@ public class Ball implements Sprite {
         surface.fillCircle(this.getX(), this.getY(), this.r);
     }
     @Override
-    public void timePassed() {
-        this.moveOneStep();
+    public void timePassed(double dt) {
+        this.moveOneStep(dt);
     }
 
     /**
@@ -101,20 +99,40 @@ public class Ball implements Sprite {
 
     /**
      * Moves one step.
+     * @param dt delta time parameter for bugs.
      */
-    public void moveOneStep() {
+    public void moveOneStep(double dt) {
+        double offsetX = 0;
+        double offsetY = 0;
         if (this.v == null) {
             return;
         }
-        Point nextCenter = new Point(this.center.getX() + v.getDx(), this.center.getY() + v.getDy());
-        Line trajectory = new Line(this.center, nextCenter);
+        if (dt < 0.001) {
+            dt = 0.016; //60 fps
+        }  else if (dt > 0.05) {
+            dt = 0.05; // avoid large physics jumps
+        }
+        Point nextCenter = new Point(this.center.getX() + v.getDx(),
+                this.center.getY() + v.getDy()); //next center of ball with current velocity
+        Line trajectory = new Line(this.center, nextCenter); //trajectory line
         CollisionInfo collisionInfo = gameEnv.getClosestCollision(trajectory);
         if (collisionInfo != null) {
             Point p = collisionInfo.collisionPoint();
+            double dx = this.v.getDx();
+            double dy = this.v.getDy();
+            double buffer = 0.1; //small step to prevent tunneling
+            double length = Math.sqrt(dx * dx + dy * dy);
+            if (length != 0) {
+                 offsetX = dx / length * buffer;
+                 offsetY = dy / length * buffer;
+            } else {
+                 offsetX = dx / buffer;
+                 offsetY = dy / buffer;
+            }
+            this.center = new Point(p.getX() - offsetX, p.getY() - offsetY); //set new center with offset
             this.v = collisionInfo.collisionObject().hit(p, this.v);
             this.setVelocity(this.v);
-            this.center = this.v.applyToPoint(this.center);
-        } else {
+        } else { //next point if no collisions
             this.center = nextCenter;
         }
     }

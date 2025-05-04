@@ -43,10 +43,11 @@ public class Velocity {
     /**
      * Take a point with position (x,y) and return a new point with position (x+dx, y+dy).
      * @param p Point.
+     * @param dt delta time.
      * @return Point.
      */
-    public Point applyToPoint(Point p) {
-        return new Point(p.getX() + this.dx, p.getY() + this.dy);
+    public Point applyToPoint(Point p, double dt) {
+        return new Point(p.getX() + this.dx * dt, p.getY() + this.dy * dt);
     }
 
     /**

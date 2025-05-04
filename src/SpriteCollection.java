@@ -26,10 +26,11 @@ public class SpriteCollection {
 
     /**
      * Notifier that time passed.
+     * @param dt delta time.
      */
-    public void notifyAllTimePassed() {
+    public void notifyAllTimePassed(double dt) {
         for (Sprite sprite : this.sprites) {
-            sprite.timePassed();
+            sprite.timePassed(dt);
         }
     }
 

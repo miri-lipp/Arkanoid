@@ -15,6 +15,7 @@ public interface Sprite {
 
     /**
      * Time Passed notifier function.
+     * @param dt delta time.
      */
-    void timePassed();
+    void timePassed(double dt);
 }

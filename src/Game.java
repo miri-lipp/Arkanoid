@@ -84,20 +84,21 @@ public class Game {
     public void run() {
         int framesPerSecond = 60;
         int millisecondsPerFrame = 1000 / framesPerSecond;
+        long startTime = System.currentTimeMillis();
         while (true) {
-            long startTime = System.currentTimeMillis(); // timing
+            long currentTimeMillis = System.currentTimeMillis(); // timing
+            double dt = (currentTimeMillis - startTime) / 1000.0; //getting delta time for better fps and less bugging
+            startTime = currentTimeMillis;
             DrawSurface d = gui.getDrawSurface();
             d.setColor(Color.BLUE);
             d.drawRectangle(0, 0, 800, 600);
             d.fillRectangle(0, 0, 800, 600);
             this.sprites.drawAllOn(d);
-//            this.ball1.DrawLine(d);
-//            this.ball2.DrawLine(d);
             gui.show(d);
-            this.sprites.notifyAllTimePassed();
+            this.sprites.notifyAllTimePassed(dt);
 
             // timing
-            long usedTime = System.currentTimeMillis() - startTime;
+            long usedTime = System.currentTimeMillis() - currentTimeMillis;
             long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
             if (milliSecondLeftToSleep > 0) {
                 sleeper.sleepFor(milliSecondLeftToSleep);

@@ -26,7 +26,7 @@ public class Block implements Collidable, Sprite {
         this.color = color;
     }
     @Override
-    public void timePassed() {
+    public void timePassed(double dt) {
         return;
     }
 
@@ -46,10 +46,7 @@ public class Block implements Collidable, Sprite {
 
     @Override
     public Rectangle getCollisionRectangle() {
-        Point p = new Point(this.upperleft.getX(), this.upperleft.getY());
-        double widthCollision = this.width;
-        double heightCollision = this.height;
-        return new Rectangle(p, widthCollision, heightCollision);
+        return new Rectangle(this.upperleft, this.width, this.height);
     }
 
     @Override

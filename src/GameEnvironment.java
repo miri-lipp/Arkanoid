@@ -28,7 +28,7 @@ public class GameEnvironment {
     // about the closest collision that is going to occur.
 
     /**
-     * getting closest Collision info.
+     * getting the closest Collision info.
      * @param trajectory of the object.
      * @return Collision info.
      */
