@@ -104,32 +104,55 @@ public class Ball implements Sprite {
         if (this.v == null) {
             return;
         }
-        Point nextCenter = this.getVelocity().applyToPoint(this.center);
-        // EXTEND the trajectory by radius
-        double dx = nextCenter.getX() - this.center.getX();
-        double dy = nextCenter.getY() - this.center.getY();
-        double length = Math.sqrt(dx * dx + dy * dy);
-        if (length != 0) {
-            // Normalize direction vector
-            dx = dx / length;
-            dy = dy / length;
-        }
-        // Create a new point slightly "ahead" by radius
-        Point extendedNextCenter = new Point(
-                nextCenter.getX() + dx * this.r,
-                nextCenter.getY() + dy * this.r
-        );
-        // Create a new trajectory line
-        Line trajectory = new Line(this.center, extendedNextCenter);
+        Point nextCenter = new Point(this.center.getX() + v.getDx(), this.center.getY() + v.getDy());
+        Line trajectory = new Line(this.center, nextCenter);
         CollisionInfo collisionInfo = this.gameEnv.getClosestCollision(trajectory);
         if (collisionInfo != null) {
             Point p = collisionInfo.collisionPoint();
-            this.center = new Point(p.getX() - dx * 0.01, p.getY() - dy * 0.01); // Slightly before collision
             this.v = collisionInfo.collisionObject().hit(p, this.v);
-            //this.center = this.v.applyToPoint(this.center);
+            this.setVelocity(this.v);
+            this.center = this.v.applyToPoint(this.center);
         } else {
             this.center = nextCenter;
         }
+//        double remainingDistance = this.v.getSpeed(); // magnitude of velocity
+//        Point currentPos = this.center;
+//
+//        while (remainingDistance > 0.01) {
+//            Point nextPos = this.v.applyToPoint(currentPos);
+//            double dx = nextPos.getX() - currentPos.getX();
+//            double dy = nextPos.getY() - currentPos.getY();
+//            double length = Math.sqrt(dx * dx + dy * dy);
+//
+//            if (length == 0) {
+//                break;
+//            }
+//
+//            dx /= length;
+//            dy /= length;
+//
+//            Point extendedNext = new Point(
+//                    nextPos.getX() + dx * this.r,
+//                    nextPos.getY() + dy * this.r
+//            );
+//
+//            Line trajectory = new Line(currentPos, extendedNext);
+//            CollisionInfo collision = this.gameEnv.getClosestCollision(trajectory);
+//            if (collision == null) {
+//                this.center = nextPos;
+//                break;
+//            } else {
+//                Point collisionPoint = collision.collisionPoint();
+//                // Move just before collision point to avoid overlap
+//                currentPos = new Point(
+//                        collisionPoint.getX() - dx * 0.01,
+//                        collisionPoint.getY() - dy * 0.01
+//                );
+//                this.v = collision.collisionObject().hit(collisionPoint, this.v);
+//                remainingDistance -= currentPos.distance(this.center);
+//                this.center = currentPos;
+//            }
+//        }
     }
 
     /**

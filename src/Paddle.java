@@ -75,7 +75,7 @@ public class Paddle implements Collidable, Sprite {
 
     @Override
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
-        double region = this.width / 5;
+        double region = this.width / 5; //hit on 5 areas of paddle
         double x = collisionPoint.getX();
         double paddle = this.upperLeft.getX();
         if (MathChecker.doubleEquals(collisionPoint.getY(), this.upperLeft.getY())) {
@@ -87,33 +87,17 @@ public class Paddle implements Collidable, Sprite {
                 return Velocity.fromAngleAndSpeed(90, currentVelocity.getSpeed());
             } else if (x < paddle + region * 4) {
                 return Velocity.fromAngleAndSpeed(30, currentVelocity.getSpeed());
-            } else {
+            } else if (x < paddle + region * 5) {
                 return Velocity.fromAngleAndSpeed(60, currentVelocity.getSpeed());
             }
+        } //hit on edges of paddle
+        double rightX = paddle + this.width;
+        if (MathChecker.doubleEquals(collisionPoint.getX(), paddle)
+                || MathChecker.doubleEquals(collisionPoint.getX(), rightX)) {
+            // Reflect horizontally
+            return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
         }
-        boolean hitVertical = false;
-        boolean hitHorizontal = false;
-        for (Line side : getCollisionRectangle().getSides()) {
-            if (side.isWithin(collisionPoint.getX(), collisionPoint.getY(), side)) {
-                boolean horizontal = MathChecker.doubleEquals(side.start().getY(), side.end().getY());
-                boolean vertical = MathChecker.doubleEquals(side.start().getX(), side.end().getX());
-                if (horizontal) {
-                    hitHorizontal = true;
-                }
-                if (vertical) {
-                    hitVertical = true;
-                }
-            }
-        }
-        double dx = currentVelocity.getDx();
-        double dy = currentVelocity.getDy();
-        if (hitHorizontal) { //if horizontal change dy to -dy
-            dy = -dy;
-        }
-        if (hitVertical) { //if vertical change dx to -dx
-            dx = -dx;
-        }
-        return new Velocity(dx, dy);
+        return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
     }
 
     // Add this paddle to the game.
