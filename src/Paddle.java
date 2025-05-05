@@ -79,7 +79,8 @@ public class Paddle implements Collidable, Sprite {
         double x = collisionPoint.getX();
         double y = collisionPoint.getY();
         double paddle = this.upperLeft.getX();
-        Line ballTrajectory = new Line(collisionPoint, new Point(x - currentVelocity.getDx(), y - currentVelocity.getDy()));
+        Line ballTrajectory = new Line(collisionPoint,
+                new Point(x - currentVelocity.getDx(), y - currentVelocity.getDy()));
         if (MathChecker.doubleEquals(collisionPoint.getY(), this.upperLeft.getY())) {
             if (x <= paddle + region) {
                 return Velocity.fromAngleAndSpeed(150, currentVelocity.getSpeed());
