@@ -77,7 +77,9 @@ public class Paddle implements Collidable, Sprite {
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
         double region = this.width / 5; //hit on 5 areas of paddle
         double x = collisionPoint.getX();
+        double y = collisionPoint.getY();
         double paddle = this.upperLeft.getX();
+        Line ballTrajectory = new Line(collisionPoint, new Point(x - currentVelocity.getDx(), y - currentVelocity.getDy()));
         if (MathChecker.doubleEquals(collisionPoint.getY(), this.upperLeft.getY())) {
             if (x <= paddle + region) {
                 return Velocity.fromAngleAndSpeed(150, currentVelocity.getSpeed());
@@ -91,6 +93,10 @@ public class Paddle implements Collidable, Sprite {
                 return Velocity.fromAngleAndSpeed(60, currentVelocity.getSpeed());
             }
         } //hit on edges of paddle
+        if (this.paddleTrajectory() != null && ballTrajectory.isIntersecting(this.paddleTrajectory())) {
+            return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
+
+        }
         double rightX = paddle + this.width;
         if (MathChecker.doubleEquals(collisionPoint.getX(), paddle)
                 || MathChecker.doubleEquals(collisionPoint.getX(), rightX)) {
@@ -109,5 +115,15 @@ public class Paddle implements Collidable, Sprite {
     public void addToGame(Game g) {
         g.addCollidable(this);
         g.addSprite(this);
+    }
+    private Line paddleTrajectory() {
+        if (this.keyboard.isPressed("a") || this.keyboard.isPressed(KeyboardSensor.LEFT_KEY)) {
+            Point upperNew = new Point(upperLeft.getX() - 5, upperLeft.getY() - 5);
+            return new Line(this.upperLeft, upperNew);
+        } else if (this.keyboard.isPressed("d") || this.keyboard.isPressed(KeyboardSensor.RIGHT_KEY)) {
+            Point upperNew = new Point(upperLeft.getX() + 5, upperLeft.getY() + 5);
+            return new Line(this.upperLeft, upperNew);
+        }
+        return null;
     }
 }
