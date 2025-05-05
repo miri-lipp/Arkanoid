@@ -51,26 +51,26 @@ public class Game {
         this.gui = new GUI("Arkanoid", 800, 600);
         KeyboardSensor keyboard = gui.getKeyboardSensor();
         this.sleeper = new Sleeper();
-        Velocity v = Velocity.fromAngleAndSpeed(90, 5);
+        Velocity v = Velocity.fromAngleAndSpeed(90, 4);
         Paddle paddle = new Paddle(new Point(35, 560), 20, 80, keyboard);
         paddle.addToGame(this);
-        Ball ball1 = new Ball(new Point(330, 400), 4, Color.ORANGE, this.environment);
-        Ball ball2 = new Ball(new Point(69, 420), 5, Color.PINK, this.environment);
+        Ball ball1 = new Ball(new Point(330, 400), 4, Color.PINK, this.environment);
+        Ball ball2 = new Ball(new Point(69, 420), 5, Color.CYAN, this.environment);
         ball1.addToGame(this);
         ball2.addToGame(this);
         ball1.setVelocity(v);
         ball2.setVelocity(v);
-        Block blockWallLeft = new Block(20, 580, new Point(0, 20), Color.GRAY);
-        Block blockWallRight = new Block(20, 580, new Point(780, 20), Color.GRAY);
+        Block blockWallLeft = new Block(20.2, 580, new Point(0, 20), Color.GRAY);
+        Block blockWallRight = new Block(20, 580, new Point(780, 19.8), Color.GRAY);
         Block blockWallUp = new Block(800, 20, new Point(0, 0), Color.GRAY);
-        Block blockWallDown = new Block(760, 20, new Point(20, 580), Color.GRAY);
+        Block blockWallDown = new Block(760, 20, new Point(19.8, 580), Color.GRAY);
         blockWallLeft.addToGame(this);
         blockWallRight.addToGame(this);
         blockWallUp.addToGame(this);
         blockWallDown.addToGame(this);
         for (int i = 0; i < 6; i++) {
             for (int j = 11; j > i; j--) {
-                Block block = new Block(60, 30, new Point(60 + j * 60, 140 + i * 31), COLORS[i]);
+                Block block = new Block(60, 30, new Point(62.8 + j * 59.8, 140 + i * 29.8), COLORS[i]);
                 block.addToGame(this);
             }
         }
