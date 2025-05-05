@@ -10,7 +10,6 @@ public class Block implements Collidable, Sprite {
     private final double height;
     private final Point upperleft;
     private final Color color;
-    static final int RADIUS = 5;
 
     /**
      * Block constructor.
@@ -26,7 +25,7 @@ public class Block implements Collidable, Sprite {
         this.color = color;
     }
     @Override
-    public void timePassed(double dt) {
+    public void timePassed() {
         return;
     }
 

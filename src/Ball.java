@@ -68,8 +68,8 @@ public class Ball implements Sprite {
         surface.fillCircle(this.getX(), this.getY(), this.r);
     }
     @Override
-    public void timePassed(double dt) {
-        this.moveOneStep(dt);
+    public void timePassed() {
+        this.moveOneStep();
     }
 
     /**
@@ -99,24 +99,19 @@ public class Ball implements Sprite {
 
     /**
      * Moves one step.
-     * @param dt delta time parameter for bugs.
      */
-    public void moveOneStep(double dt) {
-        double offsetX = 0;
-        double offsetY = 0;
+    public void moveOneStep() {
+        double offsetX;
+        double offsetY;
         if (this.v == null) {
             return;
         }
-        if (dt < 0.001) {
-            dt = 0.016; //60 fps
-        }  else if (dt > 0.05) {
-            dt = 0.05; // avoid large physics jumps
-        }
-        Point nextCenter = new Point(this.center.getX() + v.getDx(),
-                this.center.getY() + v.getDy()); //next center of ball with current velocity
+        Point nextCenter = this.v.applyToPoint(this.center); //next center of ball with current velocity
         Line trajectory = new Line(this.center, nextCenter); //trajectory line
+//        Line trajectoryHelper = new Line(this.center, this.v.applyToPoint(nextCenter));
         CollisionInfo collisionInfo = gameEnv.getClosestCollision(trajectory);
-        if (collisionInfo != null) {
+//        System.out.print("Trajectory Helper: " + hit + "Trajectory:" + collisionInfo + "\n");
+        if (collisionInfo != null) { //if there is a collision
             Point p = collisionInfo.collisionPoint();
             double dx = this.v.getDx();
             double dy = this.v.getDy();
@@ -130,8 +125,7 @@ public class Ball implements Sprite {
                  offsetY = dy / buffer;
             }
             this.center = new Point(p.getX() - offsetX, p.getY() - offsetY); //set new center with offset
-            this.v = collisionInfo.collisionObject().hit(p, this.v);
-            this.setVelocity(this.v);
+            this.v = collisionInfo.collisionObject().hit(p, this.v); //getting new velocity after hit
         } else { //next point if no collisions
             this.center = nextCenter;
         }

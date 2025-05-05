@@ -39,7 +39,8 @@ public class GameEnvironment {
             Point p = trajectory.closestIntersectionToStartOfLine(collidable.getCollisionRectangle());
             if (p != null) {
                 double distance = trajectory.start().distance(p);
-                if (distance < minDistance) {
+                if (distance < minDistance) { //iterating through the array list and
+                    // checking where is the smallest diastence with collidable
                     minDistance = distance;
                     closestCollision = new CollisionInfo(p, collidable);
                 }

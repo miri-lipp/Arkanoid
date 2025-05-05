@@ -52,7 +52,7 @@ public class Paddle implements Collidable, Sprite {
 
     // Sprite
     @Override
-    public void timePassed(double dt) { //after passing time or left or right key pressed
+    public void timePassed() { //after passing time or left or right key pressed
         if (this.keyboard.isPressed("a") || this.keyboard.isPressed(KeyboardSensor.LEFT_KEY)) {
             moveLeft();
         } else if (this.keyboard.isPressed("d") || this.keyboard.isPressed(KeyboardSensor.RIGHT_KEY)) {
