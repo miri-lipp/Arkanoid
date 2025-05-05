@@ -66,8 +66,10 @@ public class Rectangle {
      * @return list of lines of the rectangle.
      */
     public List<Line> getSides() {
-        return List.of(new Line(getEdges().get(0), getEdges().get(2)), new Line(getEdges().get(0), getEdges().get(1)),
-                new Line(getEdges().get(1), getEdges().get(3)), new Line(getEdges().get(2), getEdges().get(3)));
+        return List.of(new Line(getEdges().get(0), getEdges().get(1)),
+                new Line(getEdges().get(1), getEdges().get(3)),
+                new Line(getEdges().get(3), getEdges().get(2)),
+                new Line(getEdges().get(2), getEdges().get(0)));
     }
 
     /**

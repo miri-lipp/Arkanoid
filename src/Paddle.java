@@ -1,17 +1,23 @@
 import biuoop.DrawSurface;
 import biuoop.KeyboardSensor;
+import biuoop.Sleeper;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 /**
  * Paddle class.
  */
 public class Paddle implements Collidable, Sprite {
+    private Sleeper sleeper;
+    public static final int SPEED = 5;
+    public static final int WIDTH = 800;
     private final biuoop.KeyboardSensor keyboard;
     private final double height;
     private final double width;
     private Point upperLeft;
-    static final int RADIUS = 5;
+    private ArrayList<Ball> balls; // an array of balls to check if any ball is inside the paddle.
+
     /**
      * Paddle constructor.
      * @param upperLeft starting point.
@@ -30,10 +36,10 @@ public class Paddle implements Collidable, Sprite {
      * Moving paddle left.
      */
     public void moveLeft() {
-        double x = this.upperLeft.getX() - 5;
+        double x = this.upperLeft.getX() - SPEED;
         double y = this.upperLeft.getY();
         if (x + this.width < 0) {
-            x = 800;
+            x = WIDTH;
         }
         this.upperLeft = new Point(x, y);
     }
@@ -42,9 +48,9 @@ public class Paddle implements Collidable, Sprite {
      * Moving paddle right.
      */
     public void moveRight() {
-        double x = this.upperLeft.getX() + 5;
+        double x = this.upperLeft.getX() + SPEED;
         double y = this.upperLeft.getY();
-        if (x - this.width > 800) {
+        if (x - this.width > WIDTH) {
             x = 0 - this.width;
         }
         this.upperLeft = new Point(x, y);
@@ -53,6 +59,7 @@ public class Paddle implements Collidable, Sprite {
     // Sprite
     @Override
     public void timePassed() { //after passing time or left or right key pressed
+        isWIthinPaddle();
         if (this.keyboard.isPressed("a") || this.keyboard.isPressed(KeyboardSensor.LEFT_KEY)) {
             moveLeft();
         } else if (this.keyboard.isPressed("d") || this.keyboard.isPressed(KeyboardSensor.RIGHT_KEY)) {
@@ -77,10 +84,7 @@ public class Paddle implements Collidable, Sprite {
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
         double region = this.width / 5; //hit on 5 areas of paddle
         double x = collisionPoint.getX();
-        double y = collisionPoint.getY();
         double paddle = this.upperLeft.getX();
-        Line ballTrajectory = new Line(collisionPoint,
-                new Point(x - currentVelocity.getDx(), y - currentVelocity.getDy()));
         if (MathChecker.doubleEquals(collisionPoint.getY(), this.upperLeft.getY())) {
             if (x <= paddle + region) {
                 return Velocity.fromAngleAndSpeed(150, currentVelocity.getSpeed());
@@ -94,16 +98,14 @@ public class Paddle implements Collidable, Sprite {
                 return Velocity.fromAngleAndSpeed(60, currentVelocity.getSpeed());
             }
         } //hit on edges of paddle
-        if (this.paddleTrajectory() != null && ballTrajectory.isIntersecting(this.paddleTrajectory())) {
-            return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
-
-        }
         double rightX = paddle + this.width;
         if (MathChecker.doubleEquals(collisionPoint.getX(), paddle)
                 || MathChecker.doubleEquals(collisionPoint.getX(), rightX)) {
             // Reflect horizontally
+            //System.out.println("Horizontally x:" + -currentVelocity.getDx() + " y:" + currentVelocity.getDy());
             return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
         }
+        //System.out.println("Vertically x:" + currentVelocity.getDx() + " y:" + -currentVelocity.getDy());
         return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
     }
 
@@ -117,14 +119,65 @@ public class Paddle implements Collidable, Sprite {
         g.addCollidable(this);
         g.addSprite(this);
     }
-    private Line paddleTrajectory() {
-        if (this.keyboard.isPressed("a") || this.keyboard.isPressed(KeyboardSensor.LEFT_KEY)) {
-            Point upperNew = new Point(upperLeft.getX() - 5, upperLeft.getY() - 5);
-            return new Line(this.upperLeft, upperNew);
-        } else if (this.keyboard.isPressed("d") || this.keyboard.isPressed(KeyboardSensor.RIGHT_KEY)) {
-            Point upperNew = new Point(upperLeft.getX() + 5, upperLeft.getY() + 5);
-            return new Line(this.upperLeft, upperNew);
+
+    /**
+     * Adding a ball to array of balls.
+     * @param ball Ball.
+     */
+    public void addBalls(Ball ball) {
+        if (this.balls == null) {
+            this.balls = new ArrayList<Ball>();
         }
-        return null;
+        this.balls.add(ball);
+    }
+
+    /**
+     * Getter of balls.
+     * @return balls.
+     */
+    public ArrayList<Ball> getBalls() {
+        return this.balls;
+    }
+
+    private void isWIthinPaddle() {
+        //System.out.println("Total balls: " + getBalls().size());
+        for (Ball b : getBalls()) {
+            if (b == null) {
+                return;
+            }
+            Point rectPoint = getCollisionRectangle().getUpperLeft();
+            boolean insideX = b.getX() > rectPoint.getX() && b.getX() < rectPoint.getX() + this.width;
+            boolean isideY = b.getY() > rectPoint.getY() && b.getY() < rectPoint.getY() + this.height;
+           // System.out.println("Ball X: " + b.getX() + " ball Y: " + b.getY());
+           // System.out.println("Rectangle position X: " + rectPoint.getX() + " rectangle Y: " + rectPoint.getY());
+            //System.out.println("Inside Y: " + isideY);
+            if (insideX && isideY) { //is inside paddle
+                double dx = b.getVelocity().getDx();
+                double dy = b.getVelocity().getDy();
+                // Compute paddle center
+                double paddleCenterX = rectPoint.getX() + this.width / 2;
+                double paddleCenterY = rectPoint.getY() + this.height / 2;
+                // Vector from paddle center to ball center
+                double vectorX = b.getX() - paddleCenterX;
+                double vectorY = b.getY() - paddleCenterY;
+                // Normalize the vector
+                double magnitude = Math.sqrt(vectorX * vectorX + vectorY * vectorY);
+                if (magnitude == 0) {
+                    magnitude = 1; // prevent division by zero
+                }
+                vectorX /= magnitude;
+                vectorY /= magnitude;
+                // Push ball out slightly in that direction
+                double pushDistance = b.getSize() + 5;
+                double newX = b.getX() + vectorX * pushDistance;
+                double newY = b.getY() + vectorY * pushDistance;
+                b.setCenter(new Point(newX, newY));
+                // Adjust velocity to match new direction (reflect away)
+                b.setVelocity(new Velocity(Math.signum(vectorX) * Math.abs(dx),
+                        Math.signum(vectorY) * Math.abs(dy)));
+                // Move once after correction to avoid re-collision
+                b.moveOneStep();
+            }
+        }
     }
 }

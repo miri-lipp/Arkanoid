@@ -51,7 +51,7 @@ public class Game {
         this.gui = new GUI("Arkanoid", 800, 600);
         KeyboardSensor keyboard = gui.getKeyboardSensor();
         this.sleeper = new Sleeper();
-        Velocity v = Velocity.fromAngleAndSpeed(90, 4);
+        Velocity v = Velocity.fromAngleAndSpeed(90, 2);
         Paddle paddle = new Paddle(new Point(35, 560), 20, 80, keyboard);
         paddle.addToGame(this);
         Ball ball1 = new Ball(new Point(330, 400), 4, Color.PINK, this.environment);
@@ -60,6 +60,8 @@ public class Game {
         ball2.addToGame(this);
         ball1.setVelocity(v);
         ball2.setVelocity(v);
+        paddle.addBalls(ball1);
+        paddle.addBalls(ball2);
         Block blockWallLeft = new Block(20.2, 580, new Point(0, 20), Color.GRAY);
         Block blockWallRight = new Block(20, 580, new Point(780, 19.8), Color.GRAY);
         Block blockWallUp = new Block(800, 20, new Point(0, 0), Color.GRAY);
