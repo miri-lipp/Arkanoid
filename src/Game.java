@@ -38,16 +38,24 @@ public class Game {
      * Initializing game.
      */
     public void initialize() {
+ //       Ball[] ball = new Ball[1000];
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
         this.gui = new GUI("Arkanoid", 800, 600);
         KeyboardSensor keyboard = gui.getKeyboardSensor();
         this.sleeper = new Sleeper();
         Velocity v = Velocity.fromAngleAndSpeed(90, 4);
+        Velocity v2 = Velocity.fromAngleAndSpeed(150, 4);
         Paddle paddle = new Paddle(new Point(35, 560), 20, 80, keyboard);
         paddle.addToGame(this);
         Ball ball1 = new Ball(new Point(330, 400), 4, Color.PINK, this.environment);
         Ball ball2 = new Ball(new Point(69, 420), 5, Color.CYAN, this.environment);
+//        for (int i = 0; i < 100; i++) {
+//            ball[i] = new Ball(new Point(6 + i * 4, 420 + i * 3), 5, Color.GREEN, this.environment);
+//            ball[i].addToGame(this);
+//            ball[i].setVelocity(v2);
+//            paddle.addBalls(ball[i]);
+//        }
         ball1.addToGame(this);
         ball2.addToGame(this);
         ball1.setVelocity(v);
@@ -56,9 +64,9 @@ public class Game {
         paddle.addBalls(ball2);
         paddle.addSleeper(sleeper);
         Block blockWallLeft = new Block(20.2, 580, new Point(0, 20), Color.GRAY);
-        Block blockWallRight = new Block(20, 580, new Point(780, 19.8), Color.GRAY);
+        Block blockWallRight = new Block(20, 580, new Point(780, 19), Color.GRAY);
         Block blockWallUp = new Block(800, 20, new Point(0, 0), Color.GRAY);
-        Block blockWallDown = new Block(760, 20, new Point(19.8, 580), Color.GRAY);
+        Block blockWallDown = new Block(760, 20, new Point(19, 580), Color.GRAY);
         blockWallLeft.addToGame(this);
         blockWallRight.addToGame(this);
         blockWallUp.addToGame(this);
@@ -69,7 +77,7 @@ public class Game {
             int y = rand.nextInt(127);
             int z = rand.nextInt(51);
             for (int j = 11; j > i; j--) {
-                Block block = new Block(60, 30, new Point(61 + j * 60, 140 + i * 29.8),
+                Block block = new Block(60, 30, new Point(71 + j * 59, 140 + i * 29),
                         new Color(255 - x * 10, 255 - y * 2, 255 - z * 5));
                 block.addToGame(this);
             }

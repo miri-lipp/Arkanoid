@@ -185,6 +185,7 @@ public class Paddle implements Collidable, Sprite {
                 double newY = b.getY() + vectorY * pushDistance;
                 b.setCenter(new Point(newX, newY));
                 if (newX <= 20 || newX >= 780 || newY <= 20 || newY >= 580) { //if paddle pushed ball outside of borders
+                    b.setVelocity(Velocity.fromAngleAndSpeed(90, b.getVelocity().getSpeed()));
                     b.setCenter(new Point(69, 420));
                 }
                 // Adjust velocity to match new direction (reflect away)
