@@ -110,15 +110,17 @@ public class Ball implements Sprite {
         Line trajectory = new Line(this.center, nextCenter); //trajectory line
 //        Line trajectoryHelper = new Line(this.center, this.v.applyToPoint(nextCenter));
         CollisionInfo collisionInfo = gameEnv.getClosestCollision(trajectory);
-        //System.out.println("Collision Info x: " + trajectory.end().getX() + ", y: " + trajectory.end().getY());
+ //       System.out.println("Collision Info x: " + trajectory.end().getX() + ", y: " + trajectory.end().getY());
 //        System.out.print("Trajectory Helper: " + hit + "Trajectory:" + collisionInfo + "\n");
         if (collisionInfo != null) { //if there is a collision
             Point p = collisionInfo.collisionPoint();
-            //System.out.println("collision point x: " + p.getX() + " y: " + p.getY());
+            System.out.println("collision point x: " + p.getX() + " y: " + p.getY());
             double dx = this.v.getDx();
             double dy = this.v.getDy();
+            System.out.println("dx: " + dx + " dy: " + dy);
             double buffer = 0.1; //small step to prevent tunneling
             double length = Math.sqrt(dx * dx + dy * dy);
+            System.out.println("length: " + length);
             if (length != 0) {
                  offsetX = dx / length * buffer;
                  offsetY = dy / length * buffer;
@@ -127,7 +129,9 @@ public class Ball implements Sprite {
                  offsetY = dy / buffer;
             }
             this.center = new Point(p.getX() - offsetX, p.getY() - offsetY); //set new center with offset
+            System.out.println("center x: " + this.center.getX() + " y: " + this.center.getY());
             this.v = collisionInfo.collisionObject().hit(p, this.v); //getting new velocity after hit
+            System.out.println("New Velocity x: " + this.v.getDx() + " y: " + this.v.getDy());
         } else { //next point if no collisions
             this.center = nextCenter;
         }

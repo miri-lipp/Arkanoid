@@ -26,8 +26,8 @@ public class Velocity {
         angle = Math.toRadians(angle);
         double dx = speed * Math.cos(angle);
         double dy = -speed * Math.sin(angle);
-        if (Math.abs(dx) < 0.01) {
-            dx = 0.05;
+        if (Math.abs(dx) < 0.0001) {
+            dx = 0.001;
         }
         return new Velocity(dx, dy);
     }
@@ -43,7 +43,7 @@ public class Velocity {
     /**
      * Take a point with position (x,y) and return a new point with position (x+dx, y+dy).
      * @param p Point.
-     * @return Point.
+/     * @return Point.
      */
     public Point applyToPoint(Point p) {
         return new Point(p.getX() + this.dx, p.getY() + this.dy);

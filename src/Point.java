@@ -28,7 +28,7 @@ public class Point {
      * @return if the points is equal true else false.
      */
     public boolean equals(Point other) {
-        return this.x == other.x && this.y == other.y;
+        return MathChecker.doubleEquals(this.x, other.x) && MathChecker.doubleEquals(this.y, other.y);
     }
 
     /**Accessor method for x.

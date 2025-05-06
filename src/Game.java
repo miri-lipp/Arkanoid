@@ -4,6 +4,7 @@ import biuoop.KeyboardSensor;
 import biuoop.Sleeper;
 
 import java.awt.Color;
+import java.util.Random;
 
 /**
  * Game class.
@@ -13,15 +14,6 @@ public class Game {
     private GameEnvironment environment;
     private GUI gui;
     private Sleeper sleeper;
-    static final Color[] COLORS = {
-            Color.RED,
-            Color.GREEN,
-            Color.YELLOW,
-            Color.MAGENTA,
-            Color.ORANGE,
-            Color.CYAN,
-            Color.PINK,
-    };
 
     /**
      * Adding collidable to game environment.
@@ -62,6 +54,7 @@ public class Game {
         ball2.setVelocity(v);
         paddle.addBalls(ball1);
         paddle.addBalls(ball2);
+        paddle.addSleeper(sleeper);
         Block blockWallLeft = new Block(20.2, 580, new Point(0, 20), Color.GRAY);
         Block blockWallRight = new Block(20, 580, new Point(780, 19.8), Color.GRAY);
         Block blockWallUp = new Block(800, 20, new Point(0, 0), Color.GRAY);
@@ -70,9 +63,14 @@ public class Game {
         blockWallRight.addToGame(this);
         blockWallUp.addToGame(this);
         blockWallDown.addToGame(this);
+        Random rand = new Random();
         for (int i = 0; i < 6; i++) {
+            int x = rand.nextInt(25); //for randomizing colors
+            int y = rand.nextInt(127);
+            int z = rand.nextInt(51);
             for (int j = 11; j > i; j--) {
-                Block block = new Block(60, 30, new Point(62.8 + j * 59.8, 140 + i * 29.8), COLORS[i]);
+                Block block = new Block(60, 30, new Point(61 + j * 60, 140 + i * 29.8),
+                        new Color(255 - x * 10, 255 - y * 2, 255 - z * 5));
                 block.addToGame(this);
             }
         }
