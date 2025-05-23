@@ -38,13 +38,12 @@ public class Game {
      * Initializing game.
      */
     public void initialize() {
- //       Ball[] ball = new Ball[1000];
+  //      Ball[] ball = new Ball[1000];
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
         this.gui = new GUI("Arkanoid", 800, 600);
         KeyboardSensor keyboard = gui.getKeyboardSensor();
         this.sleeper = new Sleeper();
-        Velocity v = Velocity.fromAngleAndSpeed(90, 4);
         Velocity v2 = Velocity.fromAngleAndSpeed(150, 4);
         Paddle paddle = new Paddle(new Point(35, 560), 20, 80, keyboard);
         paddle.addToGame(this);
@@ -53,13 +52,11 @@ public class Game {
 //        for (int i = 0; i < 100; i++) {
 //            ball[i] = new Ball(new Point(6 + i * 4, 420 + i * 3), 5, Color.GREEN, this.environment);
 //            ball[i].addToGame(this);
-//            ball[i].setVelocity(v2);
+//            ball[i].setVelocity(v2.getDx() + i * 0.5, v2.getDy() + i * 0.6);
 //            paddle.addBalls(ball[i]);
 //        }
         ball1.addToGame(this);
         ball2.addToGame(this);
-        ball1.setVelocity(v);
-        ball2.setVelocity(v);
         paddle.addBalls(ball1);
         paddle.addBalls(ball2);
         paddle.addSleeper(sleeper);

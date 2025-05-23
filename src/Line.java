@@ -6,7 +6,7 @@ import java.util.List;
  * It provides methods to retrieve and manipulate the point's coordinates.
  */
 public class Line {
-    public static final double DOUBLE = 1e-10;
+    public static final double DOUBLE = 1e-5;
     // constructors
     private final double x1;
     private final double y1;

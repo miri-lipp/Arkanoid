@@ -57,13 +57,13 @@ public class Block implements Collidable, Sprite {
         for (Point edge : getCollisionRectangle().getEdges()) { //if hit edge
             //System.out.println("collision point x: " + collisionPoint.getX() + " y: " + collisionPoint.getY());
             if (collisionPoint.equals(edge)) {
-              //  System.out.println("dx: " + dx + " dy: " + dy);
+                System.out.println("dx: " + dx + " dy: " + dy);
                 if (dx != 0) {
                     dx = -dx;
                 } else if (dy != 0) {
                     dy = -dy;
                 }
-              //  System.out.println("New Velocity x: " + dx + " y: " + dy);
+                System.out.println("New Velocity x: " + dx + " y: " + dy);
                 return new Velocity(dx, dy);
             }
         }

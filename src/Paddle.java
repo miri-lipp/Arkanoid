@@ -92,13 +92,13 @@ public class Paddle implements Collidable, Sprite {
         if (MathChecker.doubleEquals(collisionPoint.getY(), this.upperLeft.getY())) {
             if (x <= paddle + region) {
                 return Velocity.fromAngleAndSpeed(150, currentVelocity.getSpeed());
-            } else if (x < paddle + region * 2) {
+            } else if (x <= paddle + region * 2) {
                 return Velocity.fromAngleAndSpeed(120, currentVelocity.getSpeed());
-            } else if (x < paddle + region * 3) {
+            } else if (x <= paddle + region * 3) {
                 return Velocity.fromAngleAndSpeed(90, currentVelocity.getSpeed());
-            } else if (x < paddle + region * 4) {
+            } else if (x <= paddle + region * 4) {
                 return Velocity.fromAngleAndSpeed(30, currentVelocity.getSpeed());
-            } else if (x < paddle + region * 5) {
+            } else if (x <= paddle + region * 5) {
                 return Velocity.fromAngleAndSpeed(60, currentVelocity.getSpeed());
             }
         } //hit on edges of paddle
@@ -155,7 +155,7 @@ public class Paddle implements Collidable, Sprite {
         //System.out.println("Total balls: " + getBalls().size());
         for (Ball b : getBalls()) {
             if (b == null) {
-                return;
+                continue;
             }
             Point rectPoint = getCollisionRectangle().getUpperLeft();
             boolean insideX = b.getX() > rectPoint.getX() && b.getX() < rectPoint.getX() + this.width;

@@ -89,4 +89,12 @@ public class Rectangle {
     public Point getUpperLeft() {
         return this.upperleft;
     }
+
+    public String toString() {
+        return getClass().getName()
+                + "[x=" + this.upperleft.getX() +
+                ",y=" + this.upperleft.getY() +
+                ",w=" + width +
+                ",h=" + height + "]";
+    }
 }

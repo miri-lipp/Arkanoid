@@ -112,11 +112,12 @@ public class Ball implements Sprite {
         CollisionInfo collisionInfo = gameEnv.getClosestCollision(trajectory);
         if (collisionInfo != null) { //if there is a collision
             Point p = collisionInfo.collisionPoint();
- //           System.out.println("collision point x: " + p.getX() + " y: " + p.getY());
+            System.out.println("collision point x: " + p.getX() + " y: " + p.getY());
+            System.out.println(collisionInfo.collisionObject().getCollisionRectangle().toString());
             double dx = this.v.getDx();
             double dy = this.v.getDy();
- //           System.out.println("dx: " + dx + " dy: " + dy);
-            double buffer = 0.5; //small step to prevent tunneling
+            System.out.println("dx: " + dx + " dy: " + dy);
+            double buffer = 5.0; //small step to prevent tunneling
             double length = Math.sqrt(dx * dx + dy * dy);
  //           System.out.println("length: " + length);
             if (length != 0) {
@@ -127,21 +128,11 @@ public class Ball implements Sprite {
                  offsetY = dy / buffer;
             }
             this.center = new Point(p.getX() - offsetX, p.getY() - offsetY); //set new center with offset
-           // System.out.println("center x: " + this.center.getX() + " y: " + this.center.getY());
+            System.out.println("center x: " + this.center.getX() + " y: " + this.center.getY());
             this.v = collisionInfo.collisionObject().hit(p, this.v); //getting new velocity after hit
-           // System.out.println("New Velocity x: " + this.v.getDx() + " y: " + this.v.getDy());
-            if (this.center.getX() > collisionInfo.collisionObject().getCollisionRectangle().getUpperLeft().getX()
-                    && this.center.getX()
-                    < collisionInfo.collisionObject().getCollisionRectangle().getUpperLeft().getX()
-                    + collisionInfo.collisionObject().getCollisionRectangle().getWidth()
-                    && this.center.getY()
-                    > collisionInfo.collisionObject().getCollisionRectangle().getUpperLeft().getY()
-                    && this.center.getY()
-                    < collisionInfo.collisionObject().getCollisionRectangle().getUpperLeft().getY()
-                    + collisionInfo.collisionObject().getCollisionRectangle().getHeight()) {
-                this.setVelocity(Velocity.fromAngleAndSpeed(90, this.getVelocity().getSpeed()));
-                this.setCenter(new Point(69, 420));
-            }
+            System.out.println("New Velocity x: " + this.v.getDx() + " y: " + this.v.getDy());
+            this.center = new Point(this.center.getX() + Math.signum(this.v.getDx()) * 0.1,
+                    this.center.getY() + Math.signum(this.v.getDy()) * 0.1);
             if (this.center.getX() <= 20 || this.center.getX() >= 780
                     || this.center.getY() <= 20 || this.center.getY() >= 580) { //if ball outside of borders
                 this.setVelocity(Velocity.fromAngleAndSpeed(90, this.getVelocity().getSpeed()));
@@ -170,6 +161,7 @@ public class Ball implements Sprite {
      * @param g game object.
      */
     public void addToGame(Game g) {
+        this.setVelocity(Velocity.fromAngleAndSpeed(90, 4));
         g.addSprite(this);
     }
 
