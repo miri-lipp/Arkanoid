@@ -1,11 +1,16 @@
 package Sprites;
 
+import Collidables.Block;
+import GameFlow.HitListener;
 import Shapes.Line;
 import Shapes.Point;
 import GameEnvironment.GameEnvironment;
 import GameEnvironment.Game;
 import Collidables.CollisionInfo;
 import biuoop.DrawSurface;
+
+import java.awt.*;
+import java.util.Random;
 
 /**
  * Class Balls.
@@ -15,7 +20,7 @@ public class Ball implements Sprite {
     // constructor
     private final int r;
     private Point center;
-    private final java.awt.Color color;
+    private java.awt.Color color;
     private Velocity v;
     private final GameEnvironment gameEnv;
     /**
@@ -62,6 +67,10 @@ public class Ball implements Sprite {
      */
     public java.awt.Color getColor() {
         return this.color;
+    }
+
+    public void setColor(java.awt.Color color) {
+        this.color = color;
     }
 
     /**
@@ -119,11 +128,11 @@ public class Ball implements Sprite {
         CollisionInfo collisionInfo = gameEnv.getClosestCollision(trajectory);
         if (collisionInfo != null) { //if there is a collision
             Point p = collisionInfo.collisionPoint();
-            System.out.println("collision point x: " + p.getX() + " y: " + p.getY());
-            System.out.println(collisionInfo.collisionObject().getCollisionRectangle().toString());
+            //System.out.println("collision point x: " + p.getX() + " y: " + p.getY());
+           // System.out.println(collisionInfo.collisionObject().getCollisionRectangle().toString());
             double dx = this.v.getDx();
             double dy = this.v.getDy();
-            System.out.println("dx: " + dx + " dy: " + dy);
+            //System.out.println("dx: " + dx + " dy: " + dy);
             double buffer = 5.0; //small step to prevent tunneling
             double length = Math.sqrt(dx * dx + dy * dy);
  //           System.out.println("length: " + length);
@@ -135,9 +144,9 @@ public class Ball implements Sprite {
                  offsetY = dy / buffer;
             }
             this.center = new Point(p.getX() - offsetX, p.getY() - offsetY); //set new center with offset
-            System.out.println("center x: " + this.center.getX() + " y: " + this.center.getY());
-            this.v = collisionInfo.collisionObject().hit(p, this.v); //getting new velocity after hit
-            System.out.println("New Sprites.Velocity x: " + this.v.getDx() + " y: " + this.v.getDy());
+           // System.out.println("center x: " + this.center.getX() + " y: " + this.center.getY());
+            this.v = collisionInfo.collisionObject().hit(p, this.v, this); //getting new velocity after hit
+            //System.out.println("New Sprites.Velocity x: " + this.v.getDx() + " y: " + this.v.getDy());
             this.center = new Point(this.center.getX() + Math.signum(this.v.getDx()) * 0.1,
                     this.center.getY() + Math.signum(this.v.getDy()) * 0.1);
             if (this.center.getX() <= 20 || this.center.getX() >= 780
@@ -178,5 +187,9 @@ public class Ball implements Sprite {
      */
     public void setCenter(Point center) {
         this.center = center;
+    }
+
+    public void removeFromGame(Game g) {
+        g.removeSprite(this);
     }
 }

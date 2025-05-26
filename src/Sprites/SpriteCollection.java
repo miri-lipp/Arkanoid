@@ -25,13 +25,18 @@ public class SpriteCollection {
     public void addSprite(Sprite s) {
         this.sprites.add(s);
     }
+
+    public void removeSprite(Sprite s) {
+        this.sprites.remove(s);
+    }
     // call timePassed() on all sprites.
 
     /**
      * Notifier that time passed.
      */
     public void notifyAllTimePassed() {
-        for (Sprite sprite : this.sprites) {
+        List <Sprite> sprites = new ArrayList<>(this.sprites);
+        for (Sprite sprite : sprites) {
             sprite.timePassed();
         }
     }

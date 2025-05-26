@@ -95,7 +95,7 @@ public class Paddle implements Collidable, Sprite {
     }
 
     @Override
-    public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+    public Velocity hit(Point collisionPoint, Velocity currentVelocity, Ball hitter) {
         double region = this.width / 5; //hit on 5 areas of paddle
         double x = collisionPoint.getX();
         double paddle = this.upperLeft.getX();

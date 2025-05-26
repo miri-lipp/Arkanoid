@@ -3,6 +3,7 @@ package Collidables;
 import Shapes.Point;
 import Shapes.Rectangle;
 import Sprites.Velocity;
+import Sprites.Ball;
 
 /**
  * Collidables.Collidable interface.
@@ -25,7 +26,8 @@ public interface Collidable {
      * Sprites.Velocity change.
      * @param collisionPoint collision points of ball with rectangle.
      * @param currentVelocity current Sprites.Velocity.
+     * @param hitter Ball that hits the block.
      * @return new Sprites.Velocity of ball.
      */
-    Velocity hit(Point collisionPoint, Velocity currentVelocity);
+    Velocity hit(Point collisionPoint, Velocity currentVelocity, Ball hitter);
 }

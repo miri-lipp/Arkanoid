@@ -34,6 +34,10 @@ public class GameEnvironment {
     // in this collection, return null. Else, return the information
     // about the closest collision that is going to occur.
 
+    public void removeCollidable(Collidable c) {
+        collidables.remove(c);
+    }
+
     /**
      * getting the closest Collision info.
      * @param trajectory of the object.

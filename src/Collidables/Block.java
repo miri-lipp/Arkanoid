@@ -1,20 +1,26 @@
 package Collidables;
 
+import GameFlow.HitListener;
 import Shapes.Line;
 import Shapes.MathChecker;
 import Shapes.Point;
 import Shapes.Rectangle;
 import Sprites.Sprite;
 import Sprites.Velocity;
+import Sprites.Ball;
+import GameFlow.HitNotifier;
 import GameEnvironment.Game;
 import biuoop.DrawSurface;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class block implements Collidables.Collidable.
  */
-public class Block implements Collidable, Sprite {
+public class Block implements Collidable, Sprite, HitNotifier {
+    private final List<HitListener> hitListeners = new ArrayList<>();
     private final double width;
     private final double height;
     private final Point upperleft;
@@ -58,24 +64,24 @@ public class Block implements Collidable, Sprite {
     }
 
     @Override
-    public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+    public Velocity hit(Point collisionPoint, Velocity currentVelocity, Ball hitter) {
         boolean hitVertical = false;
         boolean hitHorizontal = false;
         double dx = currentVelocity.getDx();
         double dy = currentVelocity.getDy();
-        for (Point edge : getCollisionRectangle().getEdges()) { //if hit edge
-            //System.out.println("collision point x: " + collisionPoint.getX() + " y: " + collisionPoint.getY());
-            if (collisionPoint.equals(edge)) {
-                System.out.println("dx: " + dx + " dy: " + dy);
-                if (dx != 0) {
-                    dx = -dx;
-                } else if (dy != 0) {
-                    dy = -dy;
-                }
-                System.out.println("New Sprites.Velocity x: " + dx + " y: " + dy);
-                return new Velocity(dx, dy);
-            }
-        }
+//        for (Point edge : getCollisionRectangle().getEdges()) { //if hit edge
+//            //System.out.println("collision point x: " + collisionPoint.getX() + " y: " + collisionPoint.getY());
+//            if (collisionPoint.equals(edge)) {
+//                //System.out.println("dx: " + dx + " dy: " + dy);
+//                if (dx != 0) {
+//                    dx = -dx;
+//                } else if (dy != 0) {
+//                    dy = -dy;
+//                }
+//                //System.out.println("New Sprites.Velocity x: " + dx + " y: " + dy);
+//                return new Velocity(dx, dy);
+//            }
+//        }
         //checks if is hit one of the sides of the rectangle.
         for (Line side : getCollisionRectangle().getSides()) {
             if (side.isWithin(collisionPoint.getX(), collisionPoint.getY(), side)) {
@@ -95,6 +101,10 @@ public class Block implements Collidable, Sprite {
         if (hitVertical) { //if vertical change dx to -dx
             dx = -dx;
         }
+        if (!ballColorMatch(hitter)) {
+            this.notifyHit(hitter);
+           // hitter.setColor(this.color);
+        }
         return new Velocity(dx, dy);
     }
 
@@ -105,5 +115,46 @@ public class Block implements Collidable, Sprite {
     public void addToGame(Game g) {
         g.addSprite(this);
         g.addCollidable(this);
+    }
+
+//    public List<HitListener> getHitListeners() {
+//        if (this.hitListeners == null) {
+//            this.hitListeners = new ArrayList<>();
+//        }
+//        return this.hitListeners;
+//    }
+
+    public boolean ballColorMatch (Ball ball) {
+        return ball.getColor().equals(this.color);
+    }
+
+    public void removeFromGame (Game g) {
+        g.removeCollidable(this);
+        g.removeSprite(this);
+    }
+
+    @Override
+    public void addHitListener (HitListener hl) {
+        this.hitListeners.add(hl);
+    }
+
+    @Override
+    public void removeHitListener (HitListener hl) {
+        this.hitListeners.remove(hl);
+    }
+
+    private void notifyHit(Ball hitter) {
+        // Make a copy of the hitListeners before iterating over them.
+        List<HitListener> listeners = new ArrayList<>(this.hitListeners);
+        // Notify all listeners about a hit event:
+        if (!listeners.isEmpty()) {
+            for (HitListener hl : listeners) {
+                hl.hitEvent(this, hitter);
+            }
+        }
+    }
+
+    public java.awt.Color getColor() {
+        return this.color;
     }
 }
