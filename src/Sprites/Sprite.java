@@ -1,7 +1,9 @@
+package Sprites;
+
 import biuoop.DrawSurface;
 
 /**
- * Sprite inteface.
+ * Sprites.Sprite inteface.
  */
 public interface Sprite {
     // draw the sprite to the screen

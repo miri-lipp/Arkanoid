@@ -1,7 +1,8 @@
+package Shapes;
 import java.util.List;
 
 /**
- * Represents a Line in a two-dimensional coordinate system.
+ * Represents a Shapes.Line in a two-dimensional coordinate system.
  * This class stores the x1, x2  and y1, y2 coordinates of a point.
  * It provides methods to retrieve and manipulate the point's coordinates.
  */
@@ -14,7 +15,7 @@ public class Line {
     private final double y2;
 
     /**
-     * Line constructor.
+     * Shapes.Line constructor.
      *
      * @param start The start point coordinate of line.
      * @param end   The end point coordinate of line.
@@ -27,7 +28,7 @@ public class Line {
     }
 
     /**
-     * Line constructor.
+     * Shapes.Line constructor.
      *
      * @param x1 the starting x coordinate of line.
      * @param y1 the starting y coordinate of line.
@@ -55,7 +56,7 @@ public class Line {
     /**
      * middle of line.
      *
-     * @return the middle point coordinates of line as a Point class.
+     * @return the middle point coordinates of line as a Shapes.Point class.
      */
     public Point middle() {
         return new Point((this.x1 + this.x2) / 2, (this.y1 + this.y2) / 2);
@@ -64,7 +65,7 @@ public class Line {
     /**
      * Starting point.
      *
-     * @return checks which coordinate is greater and returns it as a Point class.
+     * @return checks which coordinate is greater and returns it as a Shapes.Point class.
      */
     public Point start() {
         if (x1 < x2 || (MathChecker.doubleEquals(x1, x2) && y1 < y2)) {
@@ -77,7 +78,7 @@ public class Line {
     /**
      * Ending point.
      *
-     * @return checks which coordinate is smaller and returns it as a Point class.
+     * @return checks which coordinate is smaller and returns it as a Shapes.Point class.
      */
     public Point end() {
         if (x1 > x2 || (MathChecker.doubleEquals(x1, x2) && y1 > y2)) {

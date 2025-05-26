@@ -1,5 +1,11 @@
+package Collidables;
+
+import Shapes.Point;
+import Shapes.Rectangle;
+import Sprites.Velocity;
+
 /**
- * Collidable interface.
+ * Collidables.Collidable interface.
  */
 public interface Collidable {
     // Return the "collision shape" of the object.
@@ -16,10 +22,10 @@ public interface Collidable {
     // the force the object inflicted on us).
 
     /**
-     * Velocity change.
+     * Sprites.Velocity change.
      * @param collisionPoint collision points of ball with rectangle.
-     * @param currentVelocity current Velocity.
-     * @return new Velocity of ball.
+     * @param currentVelocity current Sprites.Velocity.
+     * @return new Sprites.Velocity of ball.
      */
     Velocity hit(Point collisionPoint, Velocity currentVelocity);
 }

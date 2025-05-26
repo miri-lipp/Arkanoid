@@ -1,5 +1,9 @@
+package Sprites;
+
+import Shapes.Point;
+
 /**
- * Velocity class.
+ * Sprites.Velocity class.
  */
 public class Velocity {
     // constructor
@@ -7,7 +11,7 @@ public class Velocity {
     private final double dy;
 
     /**
-     * Velocity constructor.
+     * Sprites.Velocity constructor.
      * @param dx double.
      * @param dy double.
      */
@@ -17,7 +21,7 @@ public class Velocity {
     }
 
     /**
-     * Velocity constructor.
+     * Sprites.Velocity constructor.
      * @param angle angle.
      * @param speed speed of object.
      * @return new velocity in coordinates x and y.
@@ -42,8 +46,8 @@ public class Velocity {
 
     /**
      * Take a point with position (x,y) and return a new point with position (x+dx, y+dy).
-     * @param p Point.
-/     * @return Point.
+     * @param p Point object.
+     * @return Point.
      */
     public Point applyToPoint(Point p) {
         return new Point(p.getX() + this.dx, p.getY() + this.dy);

@@ -1,3 +1,5 @@
+package Shapes;
+
 /**
  * class that checks math.
  */

@@ -1,3 +1,7 @@
+package Collidables;
+
+import Shapes.Point;
+
 /**
  * Collision info class.
  */
@@ -6,7 +10,7 @@ public class CollisionInfo {
     private final Collidable c;
 
     /**
-     * CollisionInfo constructor.
+     * Collidables.CollisionInfo constructor.
      * @param p collision point.
      * @param c collidable object.
      */

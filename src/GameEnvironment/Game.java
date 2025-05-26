@@ -1,3 +1,13 @@
+package GameEnvironment;
+
+import Collidables.Block;
+import Collidables.Collidable;
+import Shapes.Point;
+import Sprites.Ball;
+import Sprites.Paddle;
+import Sprites.Sprite;
+import Sprites.SpriteCollection;
+import Sprites.Velocity;
 import biuoop.GUI;
 import biuoop.DrawSurface;
 import biuoop.KeyboardSensor;
@@ -7,7 +17,7 @@ import java.awt.Color;
 import java.util.Random;
 
 /**
- * Game class.
+ * GameEnvironment.Game class.
  */
 public class Game {
     private SpriteCollection sprites;
@@ -24,21 +34,21 @@ public class Game {
     }
 
     /**
-     * Adding object sprite to Sprite collection.
+     * Adding object sprite to Sprites.Sprite collection.
      * @param s sprite object.
      */
     public void addSprite(Sprite s) {
         sprites.addSprite(s);
     }
 
-    // Initialize a new game: create the Blocks and Ball (and Paddle)
+    // Initialize a new game: create the Blocks and Sprites.Ball (and Sprites.Paddle)
     // and add them to the game.
 
     /**
      * Initializing game.
      */
     public void initialize() {
-  //      Ball[] ball = new Ball[1000];
+  //      Sprites.Ball[] ball = new Sprites.Ball[1000];
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
         this.gui = new GUI("Arkanoid", 800, 600);
@@ -50,7 +60,7 @@ public class Game {
         Ball ball1 = new Ball(new Point(330, 400), 4, Color.PINK, this.environment);
         Ball ball2 = new Ball(new Point(69, 420), 5, Color.CYAN, this.environment);
 //        for (int i = 0; i < 100; i++) {
-//            ball[i] = new Ball(new Point(6 + i * 4, 420 + i * 3), 5, Color.GREEN, this.environment);
+//            ball[i] = new Sprites.Ball(new Shapes.Point(6 + i * 4, 420 + i * 3), 5, Color.GREEN, this.environment);
 //            ball[i].addToGame(this);
 //            ball[i].setVelocity(v2.getDx() + i * 0.5, v2.getDy() + i * 0.6);
 //            paddle.addBalls(ball[i]);
@@ -116,7 +126,7 @@ public class Game {
 //     * @param args string.
 //     */
 //    public static void main(String[] args) {
-//        Game g = new Game();
+//        GameEnvironment.Game g = new GameEnvironment.Game();
 //        g.initialize();
 //        g.run();
 //    }

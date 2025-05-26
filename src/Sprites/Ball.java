@@ -1,3 +1,10 @@
+package Sprites;
+
+import Shapes.Line;
+import Shapes.Point;
+import GameEnvironment.GameEnvironment;
+import GameEnvironment.Game;
+import Collidables.CollisionInfo;
 import biuoop.DrawSurface;
 
 /**
@@ -13,7 +20,7 @@ public class Ball implements Sprite {
     private final GameEnvironment gameEnv;
     /**
      * Constructor.
-     * @param center of class Point.
+     * @param center of class Shapes.Point.
      * @param r radius.
      * @param color color of ball.
      * @param gameEnv game environment reference.
@@ -108,7 +115,7 @@ public class Ball implements Sprite {
         }
         Point nextCenter = this.v.applyToPoint(this.center); //next center of ball with current velocity
         Line trajectory = new Line(this.center, nextCenter); //trajectory line
-//        Line trajectoryHelper = new Line(this.center, this.v.applyToPoint(nextCenter));
+//        Shapes.Line trajectoryHelper = new Shapes.Line(this.center, this.v.applyToPoint(nextCenter));
         CollisionInfo collisionInfo = gameEnv.getClosestCollision(trajectory);
         if (collisionInfo != null) { //if there is a collision
             Point p = collisionInfo.collisionPoint();
@@ -130,7 +137,7 @@ public class Ball implements Sprite {
             this.center = new Point(p.getX() - offsetX, p.getY() - offsetY); //set new center with offset
             System.out.println("center x: " + this.center.getX() + " y: " + this.center.getY());
             this.v = collisionInfo.collisionObject().hit(p, this.v); //getting new velocity after hit
-            System.out.println("New Velocity x: " + this.v.getDx() + " y: " + this.v.getDy());
+            System.out.println("New Sprites.Velocity x: " + this.v.getDx() + " y: " + this.v.getDy());
             this.center = new Point(this.center.getX() + Math.signum(this.v.getDx()) * 0.1,
                     this.center.getY() + Math.signum(this.v.getDy()) * 0.1);
             if (this.center.getX() <= 20 || this.center.getX() >= 780
@@ -157,7 +164,7 @@ public class Ball implements Sprite {
     }
 
     /**
-     * Adding Ball to game environment.
+     * Adding Sprites.Ball to game environment.
      * @param g game object.
      */
     public void addToGame(Game g) {

@@ -1,9 +1,12 @@
+package Sprites;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import biuoop.DrawSurface;
 
 /**
- * Sprite class.
+ * Sprites.Sprite class.
  */
 public class SpriteCollection {
     private final List<Sprite> sprites;

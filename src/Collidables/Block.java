@@ -1,9 +1,18 @@
+package Collidables;
+
+import Shapes.Line;
+import Shapes.MathChecker;
+import Shapes.Point;
+import Shapes.Rectangle;
+import Sprites.Sprite;
+import Sprites.Velocity;
+import GameEnvironment.Game;
 import biuoop.DrawSurface;
 
 import java.awt.Color;
 
 /**
- * Class block implements Collidable.
+ * Class block implements Collidables.Collidable.
  */
 public class Block implements Collidable, Sprite {
     private final double width;
@@ -12,10 +21,10 @@ public class Block implements Collidable, Sprite {
     private final Color color;
 
     /**
-     * Block constructor.
+     * Collidables.Block constructor.
      * @param width of the rectangle.
      * @param height of the rectangle.
-     * @param upperleft Point of the rectangle.
+     * @param upperleft Shapes.Point of the rectangle.
      * @param color color of block.
      */
     public Block(double width, double height, Point upperleft, Color color) {
@@ -63,7 +72,7 @@ public class Block implements Collidable, Sprite {
                 } else if (dy != 0) {
                     dy = -dy;
                 }
-                System.out.println("New Velocity x: " + dx + " y: " + dy);
+                System.out.println("New Sprites.Velocity x: " + dx + " y: " + dy);
                 return new Velocity(dx, dy);
             }
         }

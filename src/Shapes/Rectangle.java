@@ -1,8 +1,10 @@
+package Shapes;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class Rectangle.
+ * Class Shapes.Rectangle.
  */
 public class Rectangle {
     private final double width;
@@ -11,7 +13,7 @@ public class Rectangle {
     // Create a new rectangle with location and width/height.
 
     /**
-     * Rectangle constructor.
+     * Shapes.Rectangle constructor.
      * @param upperLeft point of rectangle.
      * @param width width of rectangle.
      * @param height height of rectangle.
@@ -27,7 +29,7 @@ public class Rectangle {
 
     /**
      * List of intersection points.
-     * @param line Line object.
+     * @param line Shapes.Line object.
      * @return list of intersection points.
      */
     public java.util.List<Point> intersectionPoints(Line line) {
@@ -84,17 +86,17 @@ public class Rectangle {
 
     /**
      * Getter of starting point.
-     * @return Point.
+     * @return Shapes.Point.
      */
     public Point getUpperLeft() {
         return this.upperleft;
     }
 
-    public String toString() {
-        return getClass().getName()
-                + "[x=" + this.upperleft.getX() +
-                ",y=" + this.upperleft.getY() +
-                ",w=" + width +
-                ",h=" + height + "]";
-    }
+//    public String toString() {
+//        return getClass().getName()
+//                + "[x=" + this.upperleft.getX() +
+//                ",y=" + this.upperleft.getY() +
+//                ",w=" + width +
+//                ",h=" + height + "]";
+//    }
 }

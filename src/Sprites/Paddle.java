@@ -1,3 +1,10 @@
+package Sprites;
+
+import Collidables.Collidable;
+import Shapes.MathChecker;
+import Shapes.Point;
+import Shapes.Rectangle;
+import GameEnvironment.Game;
 import biuoop.DrawSurface;
 import biuoop.KeyboardSensor;
 import biuoop.Sleeper;
@@ -6,7 +13,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 /**
- * Paddle class.
+ * Sprites.Paddle class.
  */
 public class Paddle implements Collidable, Sprite {
     private Sleeper sleeper;
@@ -19,7 +26,7 @@ public class Paddle implements Collidable, Sprite {
     private ArrayList<Ball> balls; // an array of balls to check if any ball is inside the paddle.
 
     /**
-     * Paddle constructor.
+     * Sprites.Paddle constructor.
      * @param upperLeft starting point.
      * @param height height.
      * @param width width.
@@ -56,19 +63,22 @@ public class Paddle implements Collidable, Sprite {
         this.upperLeft = new Point(x, y);
     }
 
-    // Sprite
+    // Sprites.Sprite
     @Override
     public void timePassed() { //after passing time or left or right key pressed
+        boolean moved  = false;
         if (this.keyboard.isPressed("a") || this.keyboard.isPressed(KeyboardSensor.LEFT_KEY)) {
             moveLeft();
             this.sleeper.sleepFor(1); //sleeper after input
-            isWIthinPaddle();
+            moved = true;
         } else if (this.keyboard.isPressed("d") || this.keyboard.isPressed(KeyboardSensor.RIGHT_KEY)) {
             moveRight();
             this.sleeper.sleepFor(1);
+            moved = true;
+        }
+        if (moved) {
             isWIthinPaddle();
         }
-        isWIthinPaddle();
     }
 
     @Override
@@ -78,7 +88,7 @@ public class Paddle implements Collidable, Sprite {
         d.fillRectangle((int) upperLeft.getX(), (int) upperLeft.getY(), (int) width, (int) height);
     }
 
-    // Collidable
+    // Collidables.Collidable
     @Override
     public Rectangle getCollisionRectangle() {
         return new Rectangle(this.upperLeft, this.width, this.height);
@@ -126,7 +136,7 @@ public class Paddle implements Collidable, Sprite {
 
     /**
      * Adding a ball to array of balls.
-     * @param ball Ball.
+     * @param ball Sprites.Ball.
      */
     public void addBalls(Ball ball) {
         if (this.balls == null) {
@@ -160,9 +170,6 @@ public class Paddle implements Collidable, Sprite {
             Point rectPoint = getCollisionRectangle().getUpperLeft();
             boolean insideX = b.getX() > rectPoint.getX() && b.getX() < rectPoint.getX() + this.width;
             boolean insideY = b.getY() > rectPoint.getY() && b.getY() < rectPoint.getY() + this.height;
-           // System.out.println("Ball X: " + b.getX() + " ball Y: " + b.getY());
-           // System.out.println("Rectangle position X: " + rectPoint.getX() + " rectangle Y: " + rectPoint.getY());
-            //System.out.println("Inside Y: " + isideY);
             if (insideX && insideY) { //is inside paddle
                 double dx = b.getVelocity().getDx();
                 double dy = b.getVelocity().getDy();

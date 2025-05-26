@@ -1,14 +1,21 @@
+package GameEnvironment;
+
+import Collidables.Collidable;
+import Collidables.CollisionInfo;
+import Shapes.Line;
+import Shapes.Point;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Game environment class.
+ * GameEnvironment.Game environment class.
  */
 public class GameEnvironment {
     private final List<Collidable> collidables;
 
     /**
-     * Game environment constructor.
+     * GameEnvironment.Game environment constructor.
      */
     public GameEnvironment() {
         this.collidables = new ArrayList<>();

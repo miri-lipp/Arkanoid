@@ -1,5 +1,7 @@
+import GameEnvironment.Game;
+
 /**
- * Game class.
+ * GameEnvironment.Game class.
  * ID 336239652
  */
 public class Ass3Game {

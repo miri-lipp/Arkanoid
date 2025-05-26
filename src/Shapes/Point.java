@@ -1,3 +1,5 @@
+package Shapes;
+
 /**
  * Represents a point in a two-dimensional coordinate system.
  * This class stores the x and y coordinates of a point.
@@ -16,7 +18,7 @@ public class Point {
     }
 
     /** Distance.
-     * @param other The other Point coordinates.
+     * @param other The other Shapes.Point coordinates.
      * @return the distance between points as a double.
      */
     public double distance(Point other) {
@@ -24,7 +26,7 @@ public class Point {
     }
 
     /**Equals.
-     * @param other The other Point coordinates.
+     * @param other The other Shapes.Point coordinates.
      * @return if the points is equal true else false.
      */
     public boolean equals(Point other) {
