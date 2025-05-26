@@ -149,11 +149,11 @@ public class Ball implements Sprite {
             //System.out.println("New Sprites.Velocity x: " + this.v.getDx() + " y: " + this.v.getDy());
             this.center = new Point(this.center.getX() + Math.signum(this.v.getDx()) * 0.1,
                     this.center.getY() + Math.signum(this.v.getDy()) * 0.1);
-            if (this.center.getX() <= 20 || this.center.getX() >= 780
-                    || this.center.getY() <= 20 || this.center.getY() >= 580) { //if ball outside of borders
-                this.setVelocity(Velocity.fromAngleAndSpeed(90, this.getVelocity().getSpeed()));
-                this.setCenter(new Point(69, 420));
-            }
+//            if (this.center.getX() <= 20 || this.center.getX() >= 780
+//                    || this.center.getY() <= 20 || this.center.getY() >= 580) { //if ball outside of borders
+//                this.setVelocity(Velocity.fromAngleAndSpeed(90, this.getVelocity().getSpeed()));
+//                this.setCenter(new Point(69, 420));
+//            }
         } else { //next point if no collisions
             this.center = nextCenter;
         }

@@ -2,14 +2,12 @@ package GameEnvironment;
 
 import Collidables.Block;
 import Collidables.Collidable;
+import GameFlow.BallAdder;
 import GameFlow.BallRemover;
 import GameFlow.BlockRemover;
+import GameFlow.ScoreTrackingListener;
 import Shapes.Point;
-import Sprites.Ball;
-import Sprites.Paddle;
-import Sprites.Sprite;
-import Sprites.SpriteCollection;
-import Sprites.Velocity;
+import Sprites.*;
 import biuoop.GUI;
 import biuoop.DrawSurface;
 import biuoop.KeyboardSensor;
@@ -22,10 +20,24 @@ import java.util.Random;
  * GameEnvironment.Game class.
  */
 public class Game {
+    static final int SCREEN_WIDTH = 800;
+    static final int SCREEN_HEIGHT = 600;
+    static final int COUNTER_START = 0;
+    static final int BLOCK_WALLS = 4;
+    static final int CLEAR_LEVEL = 100;
     private SpriteCollection sprites;
     private GameEnvironment environment;
     private GUI gui;
     private Sleeper sleeper;
+    private Counter counterBlocks;
+    private Counter counterBalls;
+    private BlockRemover blockRemover;
+    private KeyboardSensor keyboardSensor;
+    private Random rand;
+    private Ball[] balls;
+    private ScoreTrackingListener scoreTracker;
+    private ScoreIndicator scoreIndicator;
+    private Counter score;
 
     /**
      * Adding collidable to game environment.
@@ -43,6 +55,85 @@ public class Game {
         sprites.addSprite(s);
     }
 
+    public GameEnvironment getEnvironment() {
+        return this.environment;
+    }
+
+    private void initializeGameEnv () {
+        this.counterBlocks = new Counter(COUNTER_START);
+        this.score = new Counter(COUNTER_START);
+        this.blockRemover = new BlockRemover(this, counterBlocks);
+        this.sprites = new SpriteCollection();
+        this.environment = new GameEnvironment();
+        this.scoreTracker = new ScoreTrackingListener(this.score);
+        this.scoreIndicator = new ScoreIndicator(this.scoreTracker.getCurrentScore());
+    }
+
+    private void initializeGui() {
+        this.gui = new GUI("Arkanoid", SCREEN_WIDTH, SCREEN_HEIGHT);
+        this.keyboardSensor = gui.getKeyboardSensor();
+        this.sleeper = new Sleeper();
+        this.rand = new Random();
+    }
+
+    private void initializeWalls () {
+        Block[] blockWalls = new Block[BLOCK_WALLS];
+        BallRemover ballRemover = new BallRemover(this, counterBalls);
+        blockWalls[0] = new Block(20.2, 580, new Point(0, 20), Color.GRAY);
+        blockWalls[1] = new Block(20, 580, new Point(780, 19), Color.GRAY);
+        blockWalls[2] = new Block(800, 20, new Point(0, 0), Color.GRAY);
+        blockWalls[3] = new Block(760, 20, new Point(19, 580), Color.GRAY);
+        blockWalls[3].addHitListener(ballRemover);
+        for (Block b : blockWalls) {
+            b.addToGame(this);
+        }
+        this.scoreIndicator.addToGame(this);
+    }
+
+    private void initializePaddle() {
+        Paddle paddle = new Paddle(new Point(35, 560), 20, 80, this.keyboardSensor);
+        paddle.addToGame(this);
+        paddle.addSleeper(this.sleeper);
+        for (Ball b : this.balls){
+            paddle.addBalls(b);
+        }
+    }
+
+    private void initializeBalls() {
+        this.counterBalls = new Counter(COUNTER_START);
+        this.balls = new Ball[2];
+        balls[0] = new Ball(new Point(330, 400), 4,
+                Color.ORANGE, this.environment);
+        balls[1] = new Ball(new Point(69, 420), 5,
+                Color.PINK, this.environment);
+        for (Ball b : this.balls) {
+            b.addToGame(this);
+            this.counterBalls.increase(1);
+        }
+    }
+
+    private void initializePlayableBlocks() {
+        BallAdder ballAdder = new BallAdder(this, this.counterBalls);
+        Block [] blocks = new Block[56];
+        int blockIndex = 0;
+        for (int i = 0; i < 6; i++) {
+            int x = this.rand.nextInt(25); //for randomizing colors
+            int y = this.rand.nextInt(127);
+            int z = this.rand.nextInt(51);
+            for (int j = 11; j > i; j--) {
+                Block block = new Block(60, 30, new Point(71 + j * 59, 140 + i * 29),
+                        new Color(255 - x * 10, 255 - y * 2, 255 - z * 5));
+                block.addToGame(this);
+                this.counterBlocks.increase(1);
+                block.addHitListener(this.blockRemover);
+                block.addHitListener(this.scoreTracker);
+                blocks[blockIndex++] = block;
+            }
+        }
+        int luckyBlock = this.rand.nextInt(blockIndex); //adding lucky block that adds balls on field
+        blocks[luckyBlock].addHitListener(ballAdder);
+    }
+
     // Initialize a new game: create the Blocks and Sprites.Ball (and Sprites.Paddle)
     // and add them to the game.
 
@@ -50,54 +141,12 @@ public class Game {
      * Initializing game.
      */
     public void initialize() {
-  //      Sprites.Ball[] ball = new Sprites.Ball[1000];
-        Counter counter = new Counter(0);
-        BlockRemover remover = new BlockRemover(this, counter);
-        BallRemover ballRemover = new BallRemover(this);
-        this.sprites = new SpriteCollection();
-        this.environment = new GameEnvironment();
-        this.gui = new GUI("Arkanoid", 800, 600);
-        KeyboardSensor keyboard = gui.getKeyboardSensor();
-        this.sleeper = new Sleeper();
-        //Velocity v2 = Velocity.fromAngleAndSpeed(150, 4);
-        Paddle paddle = new Paddle(new Point(35, 560), 20, 80, keyboard);
-        paddle.addToGame(this);
-//        for (int i = 0; i < 100; i++) {
-//            ball[i] = new Sprites.Ball(new Shapes.Point(6 + i * 4, 420 + i * 3), 5, Color.GREEN, this.environment);
-//            ball[i].addToGame(this);
-//            ball[i].setVelocity(v2.getDx() + i * 0.5, v2.getDy() + i * 0.6);
-//            paddle.addBalls(ball[i]);
-//        }
-        paddle.addSleeper(sleeper);
-        Block blockWallLeft = new Block(20.2, 580, new Point(0, 20), Color.GRAY);
-        Block blockWallRight = new Block(20, 580, new Point(780, 19), Color.GRAY);
-        Block blockWallUp = new Block(800, 20, new Point(0, 0), Color.GRAY);
-        Block blockWallDown = new Block(760, 20, new Point(19, 580), Color.GRAY);
-        blockWallLeft.addToGame(this);
-        blockWallRight.addToGame(this);
-        blockWallUp.addToGame(this);
-        blockWallDown.addToGame(this);
-        Random rand = new Random();
-        Ball ball1 = new Ball(new Point(330, 400), 4,
-                Color.ORANGE, this.environment);
-        Ball ball2 = new Ball(new Point(69, 420), 5,
-                Color.PINK, this.environment);
-        ball1.addToGame(this);
-        ball2.addToGame(this);
-        paddle.addBalls(ball1);
-        paddle.addBalls(ball2);
-        for (int i = 0; i < 6; i++) {
-            int x = rand.nextInt(25); //for randomizing colors
-            int y = rand.nextInt(127);
-            int z = rand.nextInt(51);
-            for (int j = 11; j > i; j--) {
-                Block block = new Block(60, 30, new Point(71 + j * 59, 140 + i * 29),
-                        new Color(255 - x * 10, 255 - y * 2, 255 - z * 5));
-                block.addToGame(this);
-                counter.increase(1);
-                block.addHitListener(remover);
-            }
-        }
+        initializeGameEnv();
+        initializeGui();
+        initializeBalls();
+        initializePaddle();
+        initializeWalls();
+        initializePlayableBlocks();
     }
 
     // Run the game -- start the animation loop.
@@ -112,8 +161,8 @@ public class Game {
             long currentTimeMillis = System.currentTimeMillis(); // timing
             DrawSurface d = gui.getDrawSurface();
             d.setColor(Color.BLUE);
-            d.drawRectangle(0, 0, 800, 600);
-            d.fillRectangle(0, 0, 800, 600);
+            d.drawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+            d.fillRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             this.sprites.drawAllOn(d);
             gui.show(d);
             this.sprites.notifyAllTimePassed();
@@ -123,6 +172,19 @@ public class Game {
             long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
             if (milliSecondLeftToSleep > 0) {
                 sleeper.sleepFor(milliSecondLeftToSleep);
+            }
+            if (this.counterBlocks.getValue() == 0) {
+                score.increase(CLEAR_LEVEL);
+                System.out.println("You win!");
+                System.out.println("Your score is: " + scoreTracker.getCurrentScore().getValue());
+                gui.close();
+                return;
+            }
+            if (this.counterBalls.getValue() == 0) {
+                System.out.println("Game Over.");
+                System.out.println("Your score is: " + scoreTracker.getCurrentScore().getValue());
+                gui.close();
+                return;
             }
         }
     }
