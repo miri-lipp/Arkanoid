@@ -15,7 +15,7 @@ public class SpriteCollection {
      * Constructor.
      */
     public SpriteCollection() {
-        this.sprites = new ArrayList<Sprite>();
+        this.sprites = new ArrayList<>();
     }
 
     /**
@@ -44,11 +44,9 @@ public class SpriteCollection {
         }
     }
 
-    // call drawOn(d) on all sprites.
-
     /**
      * Drawing of all Sprites.
-     * @param d Drawsurface object.
+     * @param d Draw surface object.
      */
     public void drawAllOn(DrawSurface d) {
         for (Sprite sprite : this.sprites) {
