@@ -82,21 +82,21 @@ public class Game {
         this.sleeper = new Sleeper();
         this.rand = new Random();
     }
-
+    //initializing walls
     private void initializeWalls() {
         Block[] blockWalls = new Block[BLOCK_WALLS];
         BallRemover ballRemover = new BallRemover(this, counterBalls);
-        blockWalls[0] = new Block(20.2, 580, new Point(0, 20), Color.GRAY);
-        blockWalls[1] = new Block(20, 580, new Point(780, 19), Color.GRAY);
+        blockWalls[0] = new Block(10, 590, new Point(0, 10), Color.GRAY);
+        blockWalls[1] = new Block(10, 590, new Point(790, 19), Color.GRAY);
         blockWalls[2] = new Block(800, 20, new Point(0, 0), Color.GRAY);
-        blockWalls[3] = new Block(760, 10, new Point(19, 590), Color.GRAY);
+        blockWalls[3] = new Block(790, 10, new Point(10, 590), Color.GRAY);
         blockWalls[3].addHitListener(ballRemover);
         for (Block b : blockWalls) {
             b.addToGame(this);
         }
         this.scoreIndicator.addToGame(this);
     }
-
+    //initializing paddle
     private void initializePaddle() {
         this.paddle = new Paddle(new Point(35, 560), 20, 80, this.keyboardSensor);
         this.paddle.addToGame(this);
@@ -105,7 +105,7 @@ public class Game {
             this.paddle.addBalls(b);
         }
     }
-
+    //initializing balls
     private void initializeBalls() {
         this.counterBalls = new Counter(COUNTER_START);
         this.balls = new Ball[2];
@@ -122,7 +122,7 @@ public class Game {
             this.counterBalls.increase(1);
         }
     }
-
+    //initializing playable blocks
     private void initializePlayableBlocks() {
         BallAdder ballAdder = new BallAdder(this, this.counterBalls, this.paddle);
         Block[] blocks = new Block[56];
@@ -132,7 +132,7 @@ public class Game {
             int y = this.rand.nextInt(127);
             int z = this.rand.nextInt(51);
             for (int j = 11; j > i; j--) {
-                Block block = new Block(60, 30, new Point(71 + j * 59, 140 + i * 29),
+                Block block = new Block(60, 30, new Point(80 + j * 59, 140 + i * 29),
                         new Color(255 - x * 10, 255 - y * 2, 255 - z * 5));
                 block.addToGame(this);
                 this.counterBlocks.increase(1);

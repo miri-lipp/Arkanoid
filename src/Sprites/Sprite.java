@@ -3,7 +3,7 @@ package Sprites;
 import biuoop.DrawSurface;
 
 /**
- * Sprites.Sprite inteface.
+ * Sprites.Sprite interface.
  */
 public interface Sprite {
     // draw the sprite to the screen

@@ -33,7 +33,7 @@ public class Rectangle {
      * @return list of intersection points.
      */
     public java.util.List<Point> intersectionPoints(Line line) {
-        List<Point> intersectionPoints = new ArrayList<Point>();
+        List<Point> intersectionPoints = new ArrayList<>();
         for (Line side : getSides()) {
             if (line.isIntersecting(side)) {
                 intersectionPoints.add(line.intersectionWith(side));

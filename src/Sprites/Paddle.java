@@ -140,7 +140,7 @@ public class Paddle implements Collidable, Sprite {
      */
     public void addBalls(Ball ball) {
         if (this.balls == null) {
-            this.balls = new ArrayList<Ball>();
+            this.balls = new ArrayList<>();
         }
         this.balls.add(ball);
     }

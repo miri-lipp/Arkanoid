@@ -41,7 +41,6 @@ public class Block implements Collidable, Sprite, HitNotifier {
     }
     @Override
     public void timePassed() {
-        return;
     }
 
     /**
