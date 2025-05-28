@@ -6,9 +6,16 @@ import biuoop.DrawSurface;
 
 import java.awt.Color;
 
+/**
+ * Score indicator.
+ */
 public class ScoreIndicator implements Sprite {
     private final Counter score;
 
+    /**
+     * Constructor.
+     * @param score object.
+     */
     public ScoreIndicator(Counter score) {
         this.score = score;
     }
@@ -24,6 +31,10 @@ public class ScoreIndicator implements Sprite {
 
     }
 
+    /**
+     * Adding to game.
+     * @param g game object.
+     */
     public void addToGame(Game g) {
         g.addSprite(this);
     }

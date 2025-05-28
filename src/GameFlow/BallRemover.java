@@ -5,9 +5,18 @@ import GameEnvironment.Counter;
 import GameEnvironment.Game;
 import Sprites.Ball;
 
-public class BallRemover implements HitListener{
+/**
+ * Removes ball from game.
+ */
+public class BallRemover implements HitListener {
     private final Game game;
     private final Counter counter;
+
+    /**
+     * Constructor.
+     * @param game game object.
+     * @param counter counter object.
+     */
     public BallRemover(Game game, Counter counter) {
         this.game = game;
         this.counter = counter;

@@ -5,9 +5,18 @@ import GameEnvironment.Counter;
 import GameEnvironment.Game;
 import Sprites.Ball;
 
-public class BlockRemover implements HitListener{
+/**
+ * Block remover class.
+ */
+public class BlockRemover implements HitListener {
     private final Game g;
     private final Counter remainingBlocks;
+
+    /**
+     * Constructor.
+     * @param g Game object.
+     * @param remainingBlocks Counter object.
+     */
     public BlockRemover(Game g, Counter remainingBlocks) {
         this.g = g;
         this.remainingBlocks = remainingBlocks;
@@ -19,6 +28,5 @@ public class BlockRemover implements HitListener{
         beingHit.removeHitListener(this);
         hitter.setColor(beingHit.getColor());
         this.remainingBlocks.decrease(1);
-       // hitter.removeFromGame(this.g);
     }
 }

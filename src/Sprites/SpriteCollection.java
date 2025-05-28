@@ -26,16 +26,19 @@ public class SpriteCollection {
         this.sprites.add(s);
     }
 
+    /**
+     * Removes sprite from the game.
+     * @param s Sprite object.
+     */
     public void removeSprite(Sprite s) {
         this.sprites.remove(s);
     }
-    // call timePassed() on all sprites.
 
     /**
-     * Notifier that time passed.
+     * call timePassed() on all sprites.
      */
     public void notifyAllTimePassed() {
-        List <Sprite> sprites = new ArrayList<>(this.sprites);
+        List<Sprite> sprites = new ArrayList<>(this.sprites);
         for (Sprite sprite : sprites) {
             sprite.timePassed();
         }

@@ -117,29 +117,31 @@ public class Block implements Collidable, Sprite, HitNotifier {
         g.addCollidable(this);
     }
 
-//    public List<HitListener> getHitListeners() {
-//        if (this.hitListeners == null) {
-//            this.hitListeners = new ArrayList<>();
-//        }
-//        return this.hitListeners;
-//    }
-
-    public boolean ballColorMatch (Ball ball) {
+    /**
+     * Checks if color of Ball matches color of block.
+     * @param ball Ball object.
+     * @return true if matches.
+     */
+    public boolean ballColorMatch(Ball ball) {
         return ball.getColor().equals(this.color);
     }
 
-    public void removeFromGame (Game g) {
+    /**
+     * Removes block from game.
+     * @param g Game object.
+     */
+    public void removeFromGame(Game g) {
         g.removeCollidable(this);
         g.removeSprite(this);
     }
 
     @Override
-    public void addHitListener (HitListener hl) {
+    public void addHitListener(HitListener hl) {
         this.hitListeners.add(hl);
     }
 
     @Override
-    public void removeHitListener (HitListener hl) {
+    public void removeHitListener(HitListener hl) {
         this.hitListeners.remove(hl);
     }
 
@@ -154,6 +156,10 @@ public class Block implements Collidable, Sprite, HitNotifier {
         }
     }
 
+    /**
+     * Getter of color.
+     * @return color.
+     */
     public java.awt.Color getColor() {
         return this.color;
     }

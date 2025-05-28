@@ -34,6 +34,10 @@ public class GameEnvironment {
     // in this collection, return null. Else, return the information
     // about the closest collision that is going to occur.
 
+    /**
+     * Removes Collidable from the game.
+     * @param c Collidable.
+     */
     public void removeCollidable(Collidable c) {
         collidables.remove(c);
     }

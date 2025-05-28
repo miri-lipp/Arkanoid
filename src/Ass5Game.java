@@ -4,14 +4,13 @@ import GameEnvironment.Game;
  * GameEnvironment.Game class.
  * ID 336239652
  */
-public class Ass3Game {
-    private Game game;
+public class Ass5Game {
 
     /**
      * Start game method.
      */
     public void startGame() {
-        this.game = new Game();
+        Game game = new Game();
         game.initialize();
         game.run();
     }
@@ -21,7 +20,7 @@ public class Ass3Game {
      * @param args string.
      */
     public static void main(String[] args) {
-        Ass3Game g = new Ass3Game();
+        Ass5Game g = new Ass5Game();
         g.startGame();
     }
 }

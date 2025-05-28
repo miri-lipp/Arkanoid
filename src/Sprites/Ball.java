@@ -1,16 +1,11 @@
 package Sprites;
 
-import Collidables.Block;
-import GameFlow.HitListener;
 import Shapes.Line;
 import Shapes.Point;
 import GameEnvironment.GameEnvironment;
 import GameEnvironment.Game;
 import Collidables.CollisionInfo;
 import biuoop.DrawSurface;
-
-import java.awt.*;
-import java.util.Random;
 
 /**
  * Class Balls.
@@ -69,6 +64,10 @@ public class Ball implements Sprite {
         return this.color;
     }
 
+    /**
+     * Setter of new color to ball.
+     * @param color color.
+     */
     public void setColor(java.awt.Color color) {
         this.color = color;
     }
@@ -177,7 +176,7 @@ public class Ball implements Sprite {
      * @param g game object.
      */
     public void addToGame(Game g) {
-        this.setVelocity(Velocity.fromAngleAndSpeed(90, 4));
+        this.setVelocity(Velocity.fromAngleAndSpeed(60, 4));
         g.addSprite(this);
     }
 
@@ -189,6 +188,10 @@ public class Ball implements Sprite {
         this.center = center;
     }
 
+    /**
+     * Removes ball from game.
+     * @param g game object.
+     */
     public void removeFromGame(Game g) {
         g.removeSprite(this);
     }
