@@ -30,6 +30,9 @@ public class Point {
      * @return if the points is equal true else false.
      */
     public boolean equals(Point other) {
+        if (other == null) {
+            return false;
+        }
         return MathChecker.doubleEquals(this.x, other.x) && MathChecker.doubleEquals(this.y, other.y);
     }
 
