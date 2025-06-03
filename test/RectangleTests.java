@@ -48,4 +48,13 @@ public class RectangleTests {
         assertNotNull(actual);
         assertTrue(expected.equals(actual), "Expected intersection at (15, 7.5)");
     }
+    @Test
+    public void testClosestIntersectionToTheStartOfLineInDiagonal() {
+        Rectangle rectangle = new Rectangle(new Point(10, 10),10,10);
+        Line line = new Line (new Point (5, 5), new Point (20, 20));
+        Point expected = new Point(10, 10);
+        Point actual = line.closestIntersectionToStartOfLine(rectangle);
+        assertNotNull(actual);
+        assertTrue(expected.equals(actual), "Expected intersection at (10, 10)");
+    }
 }
